@@ -1,16 +1,14 @@
 package com.mobilemoney.account.domain.valueobject;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Objects;
+
+import com.mobilemoney.shared.constant.MoneyConstants;
 
 // permet de mettre cette class de meniere imuable avec le mot cle FINAL
 public final class Money {
 
-	//permet de mettre un montant en decidal 
-    private static final int SCALE = 2;
-
-   //on declare une entité qui sera pas modifiable 
+   //on declare une entite qui sera pas modifiable 
     private final BigDecimal amount;
 
     // constructeur 
@@ -23,9 +21,9 @@ public final class Money {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Le montant ne peut pas être négatif.");
         }
-
-        //permet d'arrondi un chiffre 
-        this.amount = amount.setScale(SCALE, RoundingMode.HALF_UP);
+        
+        //permet de definir les decimal et arrondir les decimals 
+        this.amount=amount.setScale(MoneyConstants.SCALE, MoneyConstants.ROUNDING_MODE);
     }
 
     // les routes de sortie 

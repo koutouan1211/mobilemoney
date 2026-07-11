@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Compte créé</title>
+</head>
+
+<body>
+
+<h2>Compte créé avec succès !</h2>
+
+<p>
+    Numéro :
+    <span th:text="${response.numeroTelephone}"></span>
+</p>
+
+<p>
+    <span th:text="${response.message}"></span>
+</p>
+
+<a th:href="@{/accounts/create}">
+
+Créer un autre compte
+
+</a>
+
+</body>
+</html>

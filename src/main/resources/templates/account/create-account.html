@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Création d'un compte</title>
+</head>
+
+<body>
+
+<h2>Créer un compte Mobile Money</h2>
+
+<form th:action="@{/accounts/create}"
+      th:object="${createAccountRequest}"
+      method="post">
+
+    <label>Nom</label>
+
+    <input type="text"
+           th:field="*{nom}"/>
+
+    <br><br>
+
+    <label>Prénom</label>
+
+    <input type="text"
+           th:field="*{prenom}"/>
+
+    <br><br>
+
+    <label>Numéro</label>
+
+    <input type="text"
+           th:field="*{numeroTelephone}"/>
+
+    <br><br>
+
+    <label>Profil</label>
+
+    <select th:field="*{profil}">
+
+        <option value="SUBSCRIBER">
+            Subscriber
+        </option>
+
+        <option value="AGENT">
+            Agent
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <label>Type de personne</label>
+
+    <select th:field="*{typePersonne}">
+
+        <option value="PERSONNE_PHYSIQUE">
+            Personne physique
+        </option>
+
+        <option value="PERSONNE_MORALE">
+            Personne morale
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button type="submit">
+
+        Créer le compte
+
+    </button>
+
+</form>
+
+</body>
+</html>

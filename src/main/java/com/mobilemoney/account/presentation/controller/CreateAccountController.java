@@ -1,9 +1,14 @@
 package com.mobilemoney.account.presentation.controller;
 
+import com.mobilemoney.account.application.dto.AccountResponse;
 import com.mobilemoney.account.application.dto.CreateAccountRequest;
 import com.mobilemoney.account.application.usecase.CreateAccountUseCase;
+
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -26,16 +31,35 @@ public class CreateAccountController {
         return "account/create-account";
     }
 
+    
+    
     @PostMapping("/create")
     public String createAccount(
-            @ModelAttribute CreateAccountRequest request,
+            @Valid @ModelAttribute("createAccountRequest") CreateAccountRequest request,
+            BindingResult bindingResult,
             Model model) {
 
-        model.addAttribute(
-                "response",
-                createAccountUseCase.createAccount(request));
+        if (bindingResult.hasErrors()) {
+            return "account/create-account";
+        }
 
-        return "account/account-created";
+        try {
+
+            AccountResponse response =
+                    createAccountUseCase.createAccount(request);
+
+            model.addAttribute("response", response);
+
+            return "account/account-created";
+
+        } catch (IllegalArgumentException e) {
+
+            bindingResult.rejectValue(
+                    "numeroTelephone",
+                    "duplicate",
+                    e.getMessage());
+
+            return "account/create-account";
+        }
     }
-
 }

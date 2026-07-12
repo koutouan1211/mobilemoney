@@ -12,24 +12,40 @@
       th:object="${createAccountRequest}"
       method="post">
 
-    <label>Nom</label>
+	  <label>Nom</label>
 
-    <input type="text"
-           th:field="*{nom}"/>
+	  <input type="text" th:field="*{nom}">
 
-    <br><br>
-
-    <label>Prénom</label>
-
-    <input type="text"
-           th:field="*{prenom}"/>
+	  <div
+	       th:if="${#fields.hasErrors('nom')}"
+	       th:errors="*{nom}"
+	       style="color:red">
+	  </div>
 
     <br><br>
 
-    <label>Numéro</label>
+	<label>Prénom</label>
 
-    <input type="text"
-           th:field="*{numeroTelephone}"/>
+	<input type="text" th:field="*{prenom}">
+
+	<div
+	     th:if="${#fields.hasErrors('prenom')}"
+	     th:errors="*{prenom}"
+	     style="color:red">
+	</div>
+
+    <br><br>
+
+	<label>Numero De Téléphone</label>
+
+	<input type="text"
+	       th:field="*{numeroTelephone}">
+
+	<div
+	     th:if="${#fields.hasErrors('numeroTelephone')}"
+	     th:errors="*{numeroTelephone}"
+	     style="color:red">
+	</div>
 
     <br><br>
 

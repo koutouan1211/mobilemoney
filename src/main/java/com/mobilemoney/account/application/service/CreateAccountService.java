@@ -4,7 +4,6 @@ import com.mobilemoney.account.application.dto.AccountResponse;
 import com.mobilemoney.account.application.dto.CreateAccountRequest;
 import com.mobilemoney.account.application.usecase.CreateAccountUseCase;
 import com.mobilemoney.account.domain.entity.Compte;
-import com.mobilemoney.account.domain.enums.Profil;
 import com.mobilemoney.account.domain.repository.CompteRepository;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import org.springframework.stereotype.Service;

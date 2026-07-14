@@ -51,6 +51,11 @@ public final class Money {
         return new Money(this.amount.add(other.amount));
     }
     
+    //
+    public static Money of(long amount) {
+        return new Money(BigDecimal.valueOf(amount));
+    }
+    
     //cette methode nous permet de soustrait deux montant(solde du montant) et de ne pas permettre que un montant soit negatif
     public Money subtract(Money other) {
 

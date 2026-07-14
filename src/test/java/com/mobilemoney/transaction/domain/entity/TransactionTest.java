@@ -1,0 +1,51 @@
+package com.mobilemoney.transaction.domain.entity;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+import com.mobilemoney.account.domain.valueobject.Money;
+import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
+import com.mobilemoney.transaction.domain.enums.StatutTransaction;
+import com.mobilemoney.transaction.domain.enums.TypeTransaction;
+import com.mobilemoney.transaction.domain.valueobjet.ReferenceTransaction;
+
+
+class TransactionTest {
+
+    @Test
+    void should_create_transaction() {
+
+        Transaction transaction = Transaction.creer(
+                ReferenceTransaction.of("TX202607130001"),
+                TypeTransaction.DEPOT,
+                Money.of(10000),
+                NumeroTelephone.of("0707070707"),
+                NumeroTelephone.of("2250102030405"),
+                "Premier dépôt"
+        );
+
+        assertEquals(
+                TypeTransaction.DEPOT,
+                transaction.getTypeTransaction());
+
+        assertEquals(
+                StatutTransaction.EN_ATTENTE,
+                transaction.getStatut());
+
+        assertEquals(
+                Money.of(10000),
+                transaction.getMontant());
+
+        assertEquals(
+                NumeroTelephone.of("2250707070707"),
+                transaction.getCompteSource());
+
+        assertEquals(
+                NumeroTelephone.of("2250102030405"),
+                transaction.getCompteDestination());
+
+        assertNotNull(transaction.getDateTransaction());
+    }
+
+}

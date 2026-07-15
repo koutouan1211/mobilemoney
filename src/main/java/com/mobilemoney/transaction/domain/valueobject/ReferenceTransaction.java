@@ -1,7 +1,10 @@
-package com.mobilemoney.transaction.domain.valueobjet;
+package com.mobilemoney.transaction.domain.valueobject;
 
 
 import java.util.Objects;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public final class ReferenceTransaction {
 
@@ -51,6 +54,22 @@ public final class ReferenceTransaction {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+        
+    }
+    
+    //generer automatiquement une reference
+    public static ReferenceTransaction generer() {
+
+        String date = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        String random = UUID.randomUUID()
+                .toString()
+                .substring(0, 6)
+                .toUpperCase();
+
+        return new ReferenceTransaction(
+                "TX-" + date + "-" + random);
     }
 
 }

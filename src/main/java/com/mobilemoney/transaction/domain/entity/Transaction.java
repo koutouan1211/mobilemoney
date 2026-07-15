@@ -6,7 +6,7 @@ import com.mobilemoney.account.domain.valueobject.Money;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.transaction.domain.enums.StatutTransaction;
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
-import com.mobilemoney.transaction.domain.valueobjet.ReferenceTransaction;
+import com.mobilemoney.transaction.domain.valueobject.ReferenceTransaction;
 
 
 public class Transaction {
@@ -57,6 +57,32 @@ public class Transaction {
         return transaction;
     }
     
+
+    public static Transaction reconstruire(
+            Long id,
+            ReferenceTransaction reference,
+            TypeTransaction typeTransaction,
+            Money montant,
+            NumeroTelephone compteSource,
+            NumeroTelephone compteDestination,
+            LocalDateTime dateTransaction,
+            StatutTransaction statut,
+            String motif) {
+
+        Transaction transaction = new Transaction();
+
+        transaction.id = id;
+        transaction.reference = reference;
+        transaction.typeTransaction = typeTransaction;
+        transaction.montant = montant;
+        transaction.compteSource = compteSource;
+        transaction.compteDestination = compteDestination;
+        transaction.dateTransaction = dateTransaction;
+        transaction.statut = statut;
+        transaction.motif = motif;
+
+        return transaction;
+    }
     
 
 	public Long getId() {

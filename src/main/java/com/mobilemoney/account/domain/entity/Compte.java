@@ -161,8 +161,33 @@ public class Compte {
 
         return compte;
     }
+    
+    
+    public void crediter(Money montant) {
 
+        if (montant == null) {
+            throw new IllegalArgumentException("Le montant est obligatoire.");
+        }
 
+        this.solde = this.solde.add(montant);
+    }
+    
+    
+    public void debiter(Money montant) {
+
+        if (montant == null) {
+            throw new IllegalArgumentException("Le montant est obligatoire.");
+        }
+
+        if (this.solde.isLessThan(montant)) {
+            throw new IllegalArgumentException(
+                    "Solde insuffisant.");
+        }
+
+        this.solde = this.solde.subtract(montant);
+    }
+    
+    
   //getter
 	public Long getId() {
 		return id;

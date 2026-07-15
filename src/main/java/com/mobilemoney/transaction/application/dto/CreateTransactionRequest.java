@@ -14,7 +14,7 @@ public class CreateTransactionRequest {
     private TypeTransaction typeTransaction;
 
     private String motif;
-
+    
     public CreateTransactionRequest() {
     }
 

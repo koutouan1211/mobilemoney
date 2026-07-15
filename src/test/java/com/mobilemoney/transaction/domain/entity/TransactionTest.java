@@ -8,7 +8,7 @@ import com.mobilemoney.account.domain.valueobject.Money;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.transaction.domain.enums.StatutTransaction;
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
-import com.mobilemoney.transaction.domain.valueobjet.ReferenceTransaction;
+import com.mobilemoney.transaction.domain.valueobject.ReferenceTransaction;
 
 
 class TransactionTest {

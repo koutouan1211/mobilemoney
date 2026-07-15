@@ -97,4 +97,59 @@ class CompteTest {
         );
 
     }
+    
+    @Test
+    void should_credit_account() {
+
+        Compte compte = Compte.creer(
+        		Profil.SUBSCRIBER,
+                "KOUTOUAN",
+                "Lynda",
+                NumeroTelephone.of("0707070707"),
+                TypePersonne.PERSONNE_PHYSIQUE);
+
+        compte.crediter(Money.of(10000));
+
+        assertEquals(
+                Money.of(10000),
+                compte.getSolde());
+    }
+    
+    @Test
+    void should_debit_account() {
+
+        Compte compte = Compte.creer(
+        		Profil.SUBSCRIBER,
+                "KOUTOUAN",
+                "Lynda",
+                NumeroTelephone.of("0707070707"),
+                TypePersonne.PERSONNE_PHYSIQUE);
+
+        compte.crediter(Money.of(20000));
+        compte.debiter(Money.of(5000));
+
+        assertEquals(
+                Money.of(15000),
+                compte.getSolde());
+    }
+    
+    @Test
+    void should_throw_exception_when_balance_is_insufficient() {
+
+        Compte compte = Compte.creer(
+        		 Profil.SUBSCRIBER,
+                "KOUTOUAN",
+                "Lynda",
+                NumeroTelephone.of("0707070707"),
+                TypePersonne.PERSONNE_PHYSIQUE);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> compte.debiter(Money.of(1000)));
+
+        assertEquals(
+                "Solde insuffisant.",
+                exception.getMessage());
+    }
 }

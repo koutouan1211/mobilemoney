@@ -43,6 +43,7 @@ public final class Money {
         return amount;
     }
     
+    
     //cette methode nous permet d'additionné deux montants
     public Money add(Money other) {
 
@@ -69,6 +70,7 @@ public final class Money {
 
         return new Money(result);
     }
+    
     
     //compraraisons des differents montant
     public boolean isGreaterThan(Money other) {
@@ -105,4 +107,8 @@ public final class Money {
     public String toString() {
         return amount + " FCFA";
     }
+    
+    public void crediter(Money montant) {}
+    
+    public void debiter(Money montant) {}
 }

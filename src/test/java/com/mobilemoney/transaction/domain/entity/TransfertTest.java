@@ -8,16 +8,16 @@ import com.mobilemoney.account.domain.valueobject.Money;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.transaction.domain.enums.StatutTransaction;
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
-import com.mobilemoney.transaction.domain.valueobject.ReferenceTransaction;
+import com.mobilemoney.transaction.domain.valueobject.ReferenceTransfert;
 
 
-class TransactionTest {
+class TransfertTest {
 
     @Test
     void should_create_transaction() {
 
-        Transaction transaction = Transaction.creer(
-                ReferenceTransaction.of("TX202607130001"),
+        Transfert transaction = Transfert.creer(
+                ReferenceTransfert.of("TX202607130001"),
                 TypeTransaction.DEPOT,
                 Money.of(10000),
                 NumeroTelephone.of("0707070707"),

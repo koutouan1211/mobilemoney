@@ -4,17 +4,17 @@ import org.springframework.stereotype.Component;
 
 import com.mobilemoney.account.domain.valueobject.Money;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
-import com.mobilemoney.transaction.domain.entity.Transaction;
-import com.mobilemoney.transaction.domain.valueobject.ReferenceTransaction;
-import com.mobilemoney.transaction.infrastructure.entity.TransactionEntity;
+import com.mobilemoney.transaction.domain.entity.Transfert;
+import com.mobilemoney.transaction.domain.valueobject.ReferenceTransfert;
+import com.mobilemoney.transaction.infrastructure.entity.TransfertEntity;
 
 @Component
-public class TransactionMapper {
+public class TransfertMapper {
 
 	
-	public TransactionEntity toEntity(Transaction transaction) {
+	public TransfertEntity toEntity(Transfert transaction) {
 
-	    TransactionEntity entity = new TransactionEntity();
+	    TransfertEntity entity = new TransfertEntity();
 
 	    entity.setId(transaction.getId());
 
@@ -47,13 +47,13 @@ public class TransactionMapper {
 	
 	//reconstruction
 	
-	public Transaction toDomain(TransactionEntity entity) {
+	public Transfert toDomain(TransfertEntity entity) {
 
-	    return Transaction.reconstruire(
+	    return Transfert.reconstruire(
 
 	            entity.getId(),
 
-	            ReferenceTransaction.of(
+	            ReferenceTransfert.of(
 	                    entity.getReferenceTransaction()),
 
 	            entity.getTypeTransaction(),

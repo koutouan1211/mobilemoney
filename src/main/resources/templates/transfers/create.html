@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Effectuer un transfert</title>
+</head>
+
+<body>
+
+<h2>Transfert d'argent</h2>
+
+
+<div th:if="${message}"
+     style="color:green">
+
+    <p th:text="${message}"></p>
+
+    <p>
+        Référence :
+        <strong th:text="${reference}"></strong>
+    </p>
+
+</div>
+
+
+<form th:object="${transferRequest}"
+      th:action="@{/transfers/create}"
+      method="post">
+
+    <div>
+        <label>Numero De L'Emetteur :</label><br>
+        <input type="text"
+               th:field="*{compteSource}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Numero Du Destinataire :</label><br>
+        <input type="text"
+               th:field="*{compteDestination}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Montant :</label><br>
+        <input type="number"
+               th:field="*{montant}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Type de transaction :</label><br>
+
+        <select th:field="*{typeTransaction}">
+            <option value="">-- Choisir --</option>
+
+            <option
+                th:each="type : ${T(com.mobilemoney.transaction.domain.enums.TypeTransaction).values()}"
+                th:value="${type}"
+                th:text="${type}">
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Motif :</label><br>
+
+        <textarea
+                th:field="*{motif}">
+        </textarea>
+    </div>
+
+    <br>
+
+    <button type="submit">
+        Effectuer le transfert
+    </button>
+
+</form>
+
+</body>
+</html>

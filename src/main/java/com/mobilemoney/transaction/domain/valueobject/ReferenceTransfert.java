@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-public final class ReferenceTransaction {
+public final class ReferenceTransfert {
 
     private final String value;
 
-    private ReferenceTransaction(String value) {
+    private ReferenceTransfert(String value) {
 
         Objects.requireNonNull(value,
                 "La référence est obligatoire.");
@@ -23,8 +23,8 @@ public final class ReferenceTransaction {
         this.value = value;
     }
 
-    public static ReferenceTransaction of(String value) {
-        return new ReferenceTransaction(value);
+    public static ReferenceTransfert of(String value) {
+        return new ReferenceTransfert(value);
     }
 
     public String getValue() {
@@ -42,11 +42,11 @@ public final class ReferenceTransaction {
         if (this == o)
             return true;
 
-        if (!(o instanceof ReferenceTransaction))
+        if (!(o instanceof ReferenceTransfert))
             return false;
 
-        ReferenceTransaction that =
-                (ReferenceTransaction) o;
+        ReferenceTransfert that =
+                (ReferenceTransfert) o;
 
         return value.equals(that.value);
     }
@@ -58,7 +58,7 @@ public final class ReferenceTransaction {
     }
     
     //generer automatiquement une reference
-    public static ReferenceTransaction generer() {
+    public static ReferenceTransfert generer() {
 
         String date = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
@@ -68,7 +68,7 @@ public final class ReferenceTransaction {
                 .substring(0, 6)
                 .toUpperCase();
 
-        return new ReferenceTransaction(
+        return new ReferenceTransfert(
                 "TX-" + date + "-" + random);
     }
 

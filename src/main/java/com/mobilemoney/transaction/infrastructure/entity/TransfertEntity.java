@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "transaction")
-public class TransactionEntity {
+public class TransfertEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class TransactionEntity {
     @Column(length = 255)
     private String motif;
 
-    public TransactionEntity() {
+    public TransfertEntity() {
     }
 
     // Getters et Setters

@@ -2,7 +2,7 @@ package com.mobilemoney.transaction.application.dto;
 
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 
-public class CreateTransactionRequest {
+public class CreateTransfertRequest {
 
 	
 	private String compteSource;
@@ -15,7 +15,7 @@ public class CreateTransactionRequest {
 
     private String motif;
     
-    public CreateTransactionRequest() {
+    public CreateTransfertRequest() {
     }
 
 	public String getCompteSource() {

@@ -5,16 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import com.mobilemoney.transaction.domain.valueobject.ReferenceTransaction;
+import com.mobilemoney.transaction.domain.valueobject.ReferenceTransfert;
 
-public class ReferenceTransactionTest {
+public class ReferenceTransfertTest {
 
 	
     @Test
     void should_create_valid_reference() {
 
-        ReferenceTransaction reference =
-                ReferenceTransaction.of("TX202607120001");
+        ReferenceTransfert reference =
+                ReferenceTransfert.of("TX202607120001");
 
         assertEquals(
                 "TX202607120001",
@@ -26,7 +26,7 @@ public class ReferenceTransactionTest {
 
         assertThrows(
                 NullPointerException.class,
-                () -> ReferenceTransaction.of(null));
+                () -> ReferenceTransfert.of(null));
     }
 
     @Test
@@ -34,17 +34,17 @@ public class ReferenceTransactionTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> ReferenceTransaction.of(""));
+                () -> ReferenceTransfert.of(""));
     }
 
     @Test
     void should_consider_same_reference_equal() {
 
-        ReferenceTransaction first =
-                ReferenceTransaction.of("TX202607120001");
+        ReferenceTransfert first =
+                ReferenceTransfert.of("TX202607120001");
 
-        ReferenceTransaction second =
-                ReferenceTransaction.of("TX202607120001");
+        ReferenceTransfert second =
+                ReferenceTransfert.of("TX202607120001");
 
         assertEquals(first, second);
     }
@@ -54,14 +54,14 @@ public class ReferenceTransactionTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> ReferenceTransaction.of("bonjour"));
+                () -> ReferenceTransfert.of("bonjour"));
     }
 
     @Test
     void should_accept_valid_transaction_reference() {
 
-        ReferenceTransaction reference =
-                ReferenceTransaction.of("TX202607130001");
+        ReferenceTransfert reference =
+                ReferenceTransfert.of("TX202607130001");
 
         assertEquals(
                 "TX202607130001",

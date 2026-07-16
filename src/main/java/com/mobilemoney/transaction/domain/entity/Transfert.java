@@ -6,14 +6,14 @@ import com.mobilemoney.account.domain.valueobject.Money;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.transaction.domain.enums.StatutTransaction;
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
-import com.mobilemoney.transaction.domain.valueobject.ReferenceTransaction;
+import com.mobilemoney.transaction.domain.valueobject.ReferenceTransfert;
 
 
-public class Transaction {
+public class Transfert {
 
     private Long id;
 
-    private ReferenceTransaction reference;
+    private ReferenceTransfert reference;
 
     private TypeTransaction typeTransaction;
 
@@ -29,19 +29,19 @@ public class Transaction {
 
     private String motif;
 
-    private Transaction() {}
+    private Transfert() {}
     
     
     
-    public static Transaction creer(
-            ReferenceTransaction reference,
+    public static Transfert creer(
+            ReferenceTransfert reference,
             TypeTransaction typeTransaction,
             Money montant,
             NumeroTelephone compteSource,
             NumeroTelephone compteDestination,
             String motif) {
 
-        Transaction transaction = new Transaction();
+        Transfert transaction = new Transfert();
 
         transaction.reference = reference;
         transaction.typeTransaction = typeTransaction;
@@ -58,9 +58,9 @@ public class Transaction {
     }
     
 
-    public static Transaction reconstruire(
+    public static Transfert reconstruire(
             Long id,
-            ReferenceTransaction reference,
+            ReferenceTransfert reference,
             TypeTransaction typeTransaction,
             Money montant,
             NumeroTelephone compteSource,
@@ -69,7 +69,7 @@ public class Transaction {
             StatutTransaction statut,
             String motif) {
 
-        Transaction transaction = new Transaction();
+        Transfert transaction = new Transfert();
 
         transaction.id = id;
         transaction.reference = reference;
@@ -93,11 +93,11 @@ public class Transaction {
 		this.id = id;
 	}
 
-	public ReferenceTransaction getReference() {
+	public ReferenceTransfert getReference() {
 		return reference;
 	}
 
-	public void setReference(ReferenceTransaction reference) {
+	public void setReference(ReferenceTransfert reference) {
 		this.reference = reference;
 	}
 

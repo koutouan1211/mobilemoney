@@ -1,17 +1,17 @@
 package com.mobilemoney.transaction.application.dto;
 
-public class TransactionResponse {
+public class TransfertResponse {
 
 	
 	private String reference;
 
     private String message;
 
-    public TransactionResponse() {
+    public TransfertResponse() {
     }
 
     
-    public TransactionResponse(
+    public TransfertResponse(
             String reference,
             String message) {
 

@@ -18,19 +18,20 @@ class TransfertTest {
 
         Transfert transaction = Transfert.creer(
                 ReferenceTransfert.of("TX202607130001"),
-                TypeTransaction.DEPOT,
+                TypeTransaction.TRANSFERT_DOMESTIQUE,
                 Money.of(10000),
+                Money.of(100),
                 NumeroTelephone.of("0707070707"),
                 NumeroTelephone.of("2250102030405"),
                 "Premier dépôt"
         );
 
         assertEquals(
-                TypeTransaction.DEPOT,
+                TypeTransaction.TRANSFERT_DOMESTIQUE,
                 transaction.getTypeTransaction());
 
         assertEquals(
-                StatutTransaction.EN_ATTENTE,
+                StatutTransaction.SUCCES,
                 transaction.getStatut());
 
         assertEquals(

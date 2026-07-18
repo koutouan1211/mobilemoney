@@ -28,31 +28,35 @@ public class Transfert {
     private StatutTransaction statut;
 
     private String motif;
+    
+    private Money frais;
 
     private Transfert() {}
     
     
     
     public static Transfert creer(
-            ReferenceTransfert reference,
+    		ReferenceTransfert reference,
             TypeTransaction typeTransaction,
             Money montant,
+            Money frais,
             NumeroTelephone compteSource,
             NumeroTelephone compteDestination,
             String motif) {
 
-        Transfert transaction = new Transfert();
+    	Transfert transaction = new Transfert();
 
-        transaction.reference = reference;
-        transaction.typeTransaction = typeTransaction;
-        transaction.montant = montant;
-        transaction.compteSource = compteSource;
-        transaction.compteDestination = compteDestination;
-        transaction.motif = motif;
+    	transaction.reference = reference;
+    	transaction.typeTransaction = typeTransaction;
+    	transaction.montant = montant;
+    	transaction.frais = frais;
+    	transaction.compteSource = compteSource;
+    	transaction.compteDestination = compteDestination;
+    	transaction.motif = motif;
 
         transaction.dateTransaction = LocalDateTime.now();
 
-        transaction.statut = StatutTransaction.EN_ATTENTE;
+        transaction.statut = StatutTransaction.SUCCES;	
 
         return transaction;
     }
@@ -62,6 +66,7 @@ public class Transfert {
             Long id,
             ReferenceTransfert reference,
             TypeTransaction typeTransaction,
+            Money frais,
             Money montant,
             NumeroTelephone compteSource,
             NumeroTelephone compteDestination,
@@ -75,6 +80,7 @@ public class Transfert {
         transaction.reference = reference;
         transaction.typeTransaction = typeTransaction;
         transaction.montant = montant;
+        transaction.frais = frais;
         transaction.compteSource = compteSource;
         transaction.compteDestination = compteDestination;
         transaction.dateTransaction = dateTransaction;
@@ -83,6 +89,7 @@ public class Transfert {
 
         return transaction;
     }
+    
     
 
 	public Long getId() {
@@ -155,6 +162,18 @@ public class Transfert {
 
 	public void setMotif(String motif) {
 		this.motif = motif;
+	}
+
+
+
+	public Money getFrais() {
+		return frais;
+	}
+
+
+
+	public void setFrais(Money frais) {
+		this.frais = frais;
 	}
    
     

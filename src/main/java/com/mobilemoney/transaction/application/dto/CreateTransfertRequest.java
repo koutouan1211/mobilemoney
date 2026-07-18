@@ -2,18 +2,27 @@ package com.mobilemoney.transaction.application.dto;
 
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class CreateTransfertRequest {
 
-	
+	@NotBlank(message = "Le compte source est obligatoire.")
 	private String compteSource;
 
-    private String compteDestination;
+	@NotBlank(message = "Le compte destination est obligatoire.")
+	private String compteDestination;
 
-    private Long montant;
+	@NotNull(message = "Le montant est obligatoire.")
+	@Positive(message = "Le montant doit être supérieur à zéro.")
+	private Long montant;
 
-    private TypeTransaction typeTransaction;
+	@NotNull(message = "Le type de transaction est obligatoire.")
+	private TypeTransaction typeTransaction;
 
-    private String motif;
+	@NotBlank(message = "Le motif est obligatoire.")
+	private String motif;
     
     public CreateTransfertRequest() {
     }

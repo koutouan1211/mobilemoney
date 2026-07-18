@@ -108,7 +108,5 @@ public final class Money {
         return amount + " FCFA";
     }
     
-    public void crediter(Money montant) {}
-    
-    public void debiter(Money montant) {}
+  
 }

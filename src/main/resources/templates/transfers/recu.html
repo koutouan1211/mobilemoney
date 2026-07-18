@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+
+<title>Reçu de transfert</title>
+
+<style>
+
+body{
+    background:#f4f4f4;
+    font-family:Arial;
+}
+
+.ticket{
+
+    width:380px;
+    margin:40px auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+
+    box-shadow:0 0 15px rgba(0,0,0,.15);
+
+}
+
+h2{
+
+text-align:center;
+
+color:#16a34a;
+
+}
+
+.row{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:10px 0;
+
+border-bottom:1px solid #ececec;
+
+}
+
+.label{
+
+font-weight:bold;
+
+}
+
+.value{
+
+color:#444;
+
+}
+
+.ok{
+
+color:green;
+
+font-weight:bold;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="ticket">
+
+<h2>Transfert effectué</h2>
+
+<div class="row">
+
+<span class="label">Montant</span>
+
+<span class="value"
+th:text="${recu.montant}"></span>
+
+</div>
+
+<div class="row">
+
+<span class="label">Statut</span>
+
+<span class="ok"
+th:text="${recu.statut}"></span>
+
+</div>
+
+<div class="row">
+
+<span class="label">Frais</span>
+
+<span class="value"
+th:text="${recu.frais}"></span>
+
+</div>
+
+<div class="row">
+
+<span class="label">Date</span>
+
+<span class="value"
+th:text="${recu.dateTransaction}"></span>
+
+</div>
+
+<div class="row">
+
+<span class="label">Nouveau solde</span>
+
+<span class="value"
+th:text="${recu.nouveauSolde}"></span>
+
+</div>
+
+<div class="row">
+
+<span class="label">Référence</span>
+
+<span class="value"
+th:text="${recu.reference}"></span>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

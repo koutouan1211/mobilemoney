@@ -2,28 +2,20 @@ package com.mobilemoney.transaction.application.dto;
 
 import java.time.LocalDateTime;
 
-public class TransfertResponse {
+public class RecuTransfertResponse {
 
     private String reference;
-
-    private String message;
-
     private String montant;
-
     private String frais;
-
     private String nouveauSolde;
-
     private String statut;
-
     private LocalDateTime dateTransaction;
 
-    public TransfertResponse() {
+    public RecuTransfertResponse() {
     }
 
-    public TransfertResponse(
+    public RecuTransfertResponse(
             String reference,
-            String message,
             String montant,
             String frais,
             String nouveauSolde,
@@ -31,29 +23,22 @@ public class TransfertResponse {
             LocalDateTime dateTransaction) {
 
         this.reference = reference;
-        this.message = message;
         this.montant = montant;
         this.frais = frais;
         this.nouveauSolde = nouveauSolde;
         this.statut = statut;
+        this.nouveauSolde = nouveauSolde;
         this.dateTransaction = dateTransaction;
     }
 
-    // Getters et Setters
+    
+ // Getters et Setters
 	public String getReference() {
 		return reference;
 	}
 
 	public void setReference(String reference) {
 		this.reference = reference;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	public String getMontant() {
@@ -96,7 +81,7 @@ public class TransfertResponse {
 		this.dateTransaction = dateTransaction;
 	}
 
-   
+    
     
     
 }

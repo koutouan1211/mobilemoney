@@ -9,6 +9,15 @@
 
 <h2>Transfert d'argent</h2>
 
+<div
+    th:if="${erreur}"
+    style="color:red;
+           font-weight:bold;
+           margin-bottom:20px;">
+
+    <span th:text="${erreur}"></span>
+
+</div>
 
 <div th:if="${message}"
      style="color:green">
@@ -27,55 +36,80 @@
       th:action="@{/transfers/create}"
       method="post">
 
-    <div>
-        <label>Numero De L'Emetteur :</label><br>
-        <input type="text"
-               th:field="*{compteSource}">
-    </div>
+	  <div>
+	      <label>Numero De L'Emetteur :</label><br>
+
+	      <input type="text"
+	             th:field="*{compteSource}">
+
+	      <p style="color:red"
+	         th:if="${#fields.hasErrors('compteSource')}"
+	         th:errors="*{compteSource}">
+	      </p>
+	  </div>
+	
+    <br>
+
+	<div>
+	    <label>Numero Du Destinataire :</label><br>
+
+	    <input type="text"
+	           th:field="*{compteDestination}">
+
+	    <p style="color:red"
+	       th:if="${#fields.hasErrors('compteDestination')}"
+	       th:errors="*{compteDestination}">
+	    </p>
+	</div>
+	
+    <br>
+
+	<div>
+	    <label>Montant :</label><br>
+
+	    <input type="number"
+	           th:field="*{montant}">
+
+	    <p style="color:red"
+	       th:if="${#fields.hasErrors('montant')}"
+	       th:errors="*{montant}">
+	    </p>
+	</div>
+	
+    <br>
+
+	<div>
+	    <label>Type de transaction :</label><br>
+
+	    <select th:field="*{typeTransaction}">
+	        <option value="">-- Choisir --</option>
+
+	        <option
+	            th:each="type : ${T(com.mobilemoney.transaction.domain.enums.TypeTransaction).values()}"
+	            th:value="${type}"
+	            th:text="${type}">
+	        </option>
+	    </select>
+
+	    <p style="color:red"
+	       th:if="${#fields.hasErrors('typeTransaction')}"
+	       th:errors="*{typeTransaction}">
+	    </p>
+	</div>
 
     <br>
 
-    <div>
-        <label>Numero Du Destinataire :</label><br>
-        <input type="text"
-               th:field="*{compteDestination}">
-    </div>
+	<div>
+	    <label>Motif :</label><br>
 
-    <br>
+	    <textarea th:field="*{motif}"></textarea>
 
-    <div>
-        <label>Montant :</label><br>
-        <input type="number"
-               th:field="*{montant}">
-    </div>
-
-    <br>
-
-    <div>
-        <label>Type de transaction :</label><br>
-
-        <select th:field="*{typeTransaction}">
-            <option value="">-- Choisir --</option>
-
-            <option
-                th:each="type : ${T(com.mobilemoney.transaction.domain.enums.TypeTransaction).values()}"
-                th:value="${type}"
-                th:text="${type}">
-            </option>
-
-        </select>
-    </div>
-
-    <br>
-
-    <div>
-        <label>Motif :</label><br>
-
-        <textarea
-                th:field="*{motif}">
-        </textarea>
-    </div>
-
+	    <p style="color:red"
+	       th:if="${#fields.hasErrors('motif')}"
+	       th:errors="*{motif}">
+	    </p>
+	</div>
+	
     <br>
 
     <button type="submit">

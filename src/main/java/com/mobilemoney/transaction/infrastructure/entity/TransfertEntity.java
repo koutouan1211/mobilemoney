@@ -25,6 +25,9 @@ public class TransfertEntity {
 
     @Column(name = "montant", nullable = false)
     private BigDecimal montant;
+    
+    @Column(name = "frais", nullable = false)
+    private BigDecimal frais;
 
     @Column(name = "compte_source", nullable = false)
     private String compteSource;
@@ -72,6 +75,14 @@ public class TransfertEntity {
 
 	public BigDecimal getMontant() {
 		return montant;
+	}
+
+	public BigDecimal getFrais() {
+		return frais;
+	}
+
+	public void setFrais(BigDecimal frais) {
+		this.frais = frais;
 	}
 
 	public void setMontant(BigDecimal montant) {

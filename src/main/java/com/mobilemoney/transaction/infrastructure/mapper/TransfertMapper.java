@@ -26,6 +26,9 @@ public class TransfertMapper {
 
 	    entity.setMontant(
 	            transaction.getMontant().getAmount());
+	    
+	    entity.setFrais(
+	            transaction.getFrais().getAmount());
 
 	    entity.setCompteSource(
 	            transaction.getCompteSource().getValue());
@@ -60,7 +63,10 @@ public class TransfertMapper {
 
 	            Money.of(
 	                    entity.getMontant()),
+	            
+	            Money.of(entity.getFrais()),
 
+	            
 	            NumeroTelephone.of(
 	                    entity.getCompteSource()),
 

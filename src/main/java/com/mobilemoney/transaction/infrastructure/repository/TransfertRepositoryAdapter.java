@@ -1,9 +1,12 @@
 package com.mobilemoney.transaction.infrastructure.repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.transaction.domain.entity.Transfert;
 import com.mobilemoney.transaction.domain.repository.TransfertRepository;
 import com.mobilemoney.transaction.domain.valueobject.ReferenceTransfert;
@@ -45,4 +48,17 @@ public class TransfertRepositoryAdapter  implements TransfertRepository {
                 .map(mapper::toDomain);
     }
 
+    //verifie lh'istorique des transactions
+    @Override
+    public List<Transfert> findHistoriqueParNumero(
+            NumeroTelephone numeroTelephone) {
+
+        return jpaRepository
+                .findByCompteSourceOrCompteDestination(
+                        numeroTelephone.getValue(),
+                        numeroTelephone.getValue())
+                .stream()
+                .map(mapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }

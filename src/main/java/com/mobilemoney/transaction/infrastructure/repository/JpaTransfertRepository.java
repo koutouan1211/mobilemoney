@@ -1,5 +1,6 @@
 package com.mobilemoney.transaction.infrastructure.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,7 @@ public interface JpaTransfertRepository
 
     Optional<TransfertEntity> findByReferenceTransaction(String referenceTransaction);
 
+    List<TransfertEntity> findByCompteSourceOrCompteDestination(
+            String compteSource,
+            String compteDestination);
 }

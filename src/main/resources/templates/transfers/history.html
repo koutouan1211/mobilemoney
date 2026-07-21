@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Historique des transferts</title>
+</head>
+<body>
+
+<h2>Historique des transferts</h2>
+
+ 
+<form th:action="@{/transfers/history/search}" method="get">
+
+    <label>Numéro de téléphone :</label>
+
+    <input type="text"
+           name="numeroTelephone"
+           th:value="${numeroTelephone}" />
+
+    <button type="submit">
+        Rechercher
+    </button>
+
+</form>
+
+<br>
+
+
+
+<table border="1"
+       th:if="${historique != null and !historique.isEmpty()}">
+
+    <thead>
+    <tr>
+        <th>Référence</th>
+        <th>Type</th>
+        <th>Source</th>
+        <th>Destination</th>
+        <th>Montant</th>
+        <th>Frais</th>
+        <th>Statut</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="transfert : ${historique}">
+
+        <td th:text="${transfert.reference}"></td>
+
+        <td th:text="${transfert.typeTransaction}"></td>
+
+        <td th:text="${transfert.compteSource}"></td>
+
+        <td th:text="${transfert.compteDestination}"></td>
+
+        <td th:text="${transfert.montant}"></td>
+
+        <td th:text="${transfert.frais}"></td>
+
+        <td th:text="${transfert.statut}"></td>
+
+        <td th:text="${transfert.dateTransaction}"></td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+<a th:href="@{/transfers/create}" class="btn btn-primary">
+    Retour au transfert
+</a>
+</body>
+</html>

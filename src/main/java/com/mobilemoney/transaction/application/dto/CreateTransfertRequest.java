@@ -66,6 +66,10 @@ public class CreateTransfertRequest {
 	public void setMotif(String motif) {
 		this.motif = motif;
 	}
+
+	public static void main(String[] args) {
+	
+	}
     
     
 }

@@ -10,7 +10,7 @@ import com.mobilemoney.account.infrastructure.entity.CompteEntity;
 @Component
 public class CompteMapper {
 
-
+//traduit le domain vers la base de donnée(DBB)
     public CompteEntity toEntity(Compte compte) {
 
         CompteEntity entity = new CompteEntity();
@@ -41,7 +41,7 @@ public class CompteMapper {
         return entity;
     }
 
-    //
+    //traduit la base de donnée vers le domain
     public Compte toDomain(CompteEntity entity) {
 
         return Compte.reconstituer(

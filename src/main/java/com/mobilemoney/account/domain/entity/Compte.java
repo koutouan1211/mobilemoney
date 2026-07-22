@@ -165,16 +165,29 @@ public class Compte {
     
     public void crediter(Money montant) {
 
+        verifierCompteActif();
+
         if (montant == null) {
-            throw new IllegalArgumentException("Le montant est obligatoire.");
+            throw new IllegalArgumentException(
+                    "Le montant est obligatoire.");
         }
 
-        this.solde = this.solde.add(montant);
+        Money nouveauSolde = this.solde.add(montant);
+
+        if (nouveauSolde.isGreaterThan(this.plafond)) {
+            throw new IllegalArgumentException(
+                    "Le plafond du compte serait dépassé.");
+        }
+
+        this.solde = nouveauSolde;
     }
+    
     
     
     public void debiter(Money montant) {
 
+    	 verifierCompteActif();
+    	
         if (montant == null) {
             throw new IllegalArgumentException("Le montant est obligatoire.");
         }
@@ -185,6 +198,16 @@ public class Compte {
         }
 
         this.solde = this.solde.subtract(montant);
+    }
+   
+    // le compte verifie son statut seule 
+    
+    private void verifierCompteActif() {
+
+        if (this.statut != StatutCompte.ACTIF) {
+            throw new IllegalArgumentException(
+                    "Le compte n'est pas actif.");
+        }
     }
     
     

@@ -106,9 +106,13 @@ public class CreateDepotServiceTest {
 
         assertNotNull(response);
 
-        assertEquals("450000.00", agent.getSolde().toString());
+        assertEquals(
+                "450000.00 FCFA",
+                agent.getSolde().toString());
 
-        assertEquals("150000.00", client.getSolde().toString());
+        assertEquals(
+                "150000.00 FCFA",
+                client.getSolde().toString());
 
         assertEquals(
                 "0700000001",

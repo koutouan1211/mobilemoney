@@ -3,9 +3,12 @@ package com.mobilemoney.transaction.application.service;
 import org.springframework.stereotype.Service;
 
 import com.mobilemoney.account.domain.entity.Compte;
+import com.mobilemoney.account.domain.enums.StatutCompte;
 import com.mobilemoney.account.domain.repository.CompteRepository;
 import com.mobilemoney.account.domain.valueobject.Money;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
+import com.mobilemoney.common.exception.CompteAgentInactifException;
+import com.mobilemoney.common.exception.CompteClientInactifException;
 import com.mobilemoney.transaction.application.dto.CreateDepotRequest;
 import com.mobilemoney.transaction.application.dto.DepotResponse;
 import com.mobilemoney.transaction.application.usecase.CreateDepotUseCase;
@@ -66,6 +69,16 @@ public class CreateDepotService implements CreateDepotUseCase{
 	    	// on recupere le montant 
 	    	Money montant =
 	    	        Money.of(request.getMontant());
+	    	
+	    	
+	    	// pour genere les erreurs 
+	    	if (compteAgent.getStatut() != StatutCompte.ACTIF) {
+	    	    throw new CompteAgentInactifException();
+	    	}
+
+	    	if (compteClient.getStatut() != StatutCompte.ACTIF) {
+	    	    throw new CompteClientInactifException();
+	    	}
 	    	
 	    	//on debite et on credite le montant
 	    	compteAgent.debiter(montant);

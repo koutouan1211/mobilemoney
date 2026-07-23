@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mobilemoney.transaction.application.dto.CreateDepotRequest;
 import com.mobilemoney.transaction.application.dto.DepotResponse;
 import com.mobilemoney.transaction.application.usecase.CreateDepotUseCase;
+import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 
 import jakarta.validation.Valid;
 
@@ -23,14 +24,19 @@ public class DepotController {
         this.createDepotUseCase = createDepotUseCase;
     }
 
+    // afficher le formulaire
     @GetMapping("/create")
     public String afficherFormulaireDepot(Model model) {
 
-        model.addAttribute("depot", new CreateDepotRequest());
+        CreateDepotRequest request = new CreateDepotRequest();
+        request.setTypeTransaction(TypeTransaction.DEPOT);
+
+        model.addAttribute("depot", request);
 
         return "deposits/create";
     }
 
+    //effectuer depot 
     @PostMapping("/create")
     public String effectuerDepot(
             @Valid CreateDepotRequest request,

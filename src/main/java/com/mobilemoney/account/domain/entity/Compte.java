@@ -165,7 +165,7 @@ public class Compte {
     
     public void crediter(Money montant) {
 
-        verifierCompteActif();
+        //verifierCompteActif();
 
         if (montant == null) {
             throw new IllegalArgumentException(
@@ -186,7 +186,7 @@ public class Compte {
     
     public void debiter(Money montant) {
 
-    	 verifierCompteActif();
+    	// verifierCompteActif();
     	
         if (montant == null) {
             throw new IllegalArgumentException("Le montant est obligatoire.");
@@ -202,13 +202,13 @@ public class Compte {
    
     // le compte verifie son statut seule 
     
-    private void verifierCompteActif() {
+   // private void verifierCompteActif() {
 
-        if (this.statut != StatutCompte.ACTIF) {
-            throw new IllegalArgumentException(
-                    "Le compte n'est pas actif.");
-        }
-    }
+       // if (this.statut != StatutCompte.ACTIF) {
+         //   throw new IllegalArgumentException(
+         //           "Le compte n'est pas actif.");
+       // }
+    //}
     
     
   //getter

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Reçu de dépôt</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background:#f4f6f9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+
+}
+
+.recu{
+
+    width:600px;
+    background:white;
+    border-radius:12px;
+    padding:35px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+}
+
+h2{
+
+    text-align:center;
+    color:#27ae60;
+    margin-bottom:30px;
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+td{
+
+    padding:12px;
+    border-bottom:1px solid #ecf0f1;
+
+}
+
+td:first-child{
+
+    font-weight:bold;
+    color:#34495e;
+    width:45%;
+
+}
+
+.message{
+
+    margin-top:30px;
+    text-align:center;
+    color:#27ae60;
+    font-size:18px;
+    font-weight:bold;
+
+}
+
+.actions{
+
+    margin-top:35px;
+    display:flex;
+    justify-content:space-between;
+
+}
+
+.actions a{
+
+    padding:12px 25px;
+    background:#2980b9;
+    color:white;
+    text-decoration:none;
+    border-radius:6px;
+
+}
+
+.actions a:hover{
+
+    background:#21618c;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="recu">
+
+<h2>REÇU DE DÉPÔT</h2>
+
+<table>
+
+<tr>
+<td>Référence</td>
+<td th:text="${recu.reference}"></td>
+</tr>
+
+<tr>
+<td>Numéro Agent</td>
+<td th:text="${recu.numeroAgent}"></td>
+</tr>
+
+<tr>
+<td>Numéro Client</td>
+<td th:text="${recu.numeroClient}"></td>
+</tr>
+
+<tr>
+<td>Montant</td>
+<td th:text="${recu.montant}"></td>
+</tr>
+
+<tr>
+<td>Nouveau Solde Client</td>
+<td th:text="${recu.nouveauSolde}"></td>
+</tr>
+
+<tr>
+<td>Statut</td>
+<td th:text="${recu.statut}"></td>
+</tr>
+
+<tr>
+<td>Date</td>
+<td th:text="${#temporals.format(recu.dateOperation,'dd/MM/yyyy HH:mm:ss')}"></td>
+</tr>
+
+</table>
+
+<div class="message">
+
+✓ Dépôt effectué avec succès
+
+</div>
+
+<div class="actions">
+
+<a th:href="@{/deposits/create}">
+
+Nouveau dépôt
+
+</a>
+
+<a th:href="@{/}">
+
+Accueil
+
+</a>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

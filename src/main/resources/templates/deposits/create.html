@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<title>Effectuer un dépôt</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background:#f4f6f9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+
+}
+
+.card{
+
+    width:550px;
+    background:white;
+    padding:35px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+}
+
+h2{
+
+    text-align:center;
+    margin-bottom:30px;
+    color:#2c3e50;
+
+}
+
+.form-group{
+
+    margin-bottom:18px;
+
+}
+
+label{
+
+    display:block;
+    margin-bottom:8px;
+    font-weight:bold;
+    color:#34495e;
+
+}
+
+input,select{
+
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+
+}
+
+input:focus{
+
+    outline:none;
+    border-color:#2ecc71;
+
+}
+
+.error{
+
+    color:red;
+    font-size:13px;
+    margin-top:5px;
+
+}
+
+button{
+
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:6px;
+    background:#27ae60;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+
+}
+
+button:hover{
+
+    background:#1e8449;
+
+}
+
+.menu{
+
+    display:flex;
+    justify-content:space-between;
+    margin-top:25px;
+
+}
+
+.menu a{
+
+    text-decoration:none;
+    color:#2980b9;
+    font-weight:bold;
+
+}
+
+.menu a:hover{
+
+    text-decoration:underline;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>DEPOT D'ARGENT</h2>
+
+<form
+th:action="@{/deposits/create}"
+th:object="${depot}"
+method="post">
+
+<div class="form-group">
+
+<label>Numéro de l'Agent</label>
+
+<input
+type="text"
+th:field="*{numeroAgent}">
+
+<div
+class="error"
+th:if="${#fields.hasErrors('numeroAgent')}"
+th:errors="*{numeroAgent}">
+</div>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Numéro du Client</label>
+
+<input
+type="text"
+th:field="*{numeroClient}">
+
+<div
+class="error"
+th:if="${#fields.hasErrors('numeroClient')}"
+th:errors="*{numeroClient}">
+</div>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Montant</label>
+
+<input
+type="number"
+th:field="*{montant}">
+
+<div
+class="error"
+th:if="${#fields.hasErrors('montant')}"
+th:errors="*{montant}">
+</div>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Motif</label>
+
+<input
+type="text"
+th:field="*{motif}">
+
+</div>
+
+
+<input
+type="hidden"
+th:field="*{typeTransaction}"
+th:value="${T(com.mobilemoney.transaction.domain.enums.TypeTransaction).DEPOT}"/>
+
+<button type="submit">
+
+Effectuer le dépôt
+
+</button>
+
+</form>
+
+<div class="menu">
+
+<a th:href="@{/}">
+Accueil
+
+</a>
+
+<a th:href="@{/withdrawals/create}">
+
+Effectuer un retrait
+
+</a>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

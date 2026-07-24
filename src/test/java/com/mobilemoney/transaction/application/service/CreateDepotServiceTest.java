@@ -472,4 +472,137 @@ public class CreateDepotServiceTest {
     }
     
     
+    
+    @Test
+    void effectuerDepot_soldeAgentInsuffisant() {
+
+        // ========= ARRANGE =========
+
+        CreateDepotRequest request = new CreateDepotRequest();
+        request.setNumeroAgent("0700000001");
+        request.setNumeroClient("0700000002");
+        request.setMontant(new BigDecimal("50000"));
+        request.setTypeTransaction(TypeTransaction.DEPOT);
+        request.setMotif("Dépôt en espèces");
+
+        Compte agent = Compte.reconstituer(
+                1L,
+                "YAO",
+                "Jean",
+                NumeroTelephone.of("0700000001"),
+                Profil.AGENT,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("10000"), // Solde insuffisant
+                Money.of("100000000"),
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        Compte client = Compte.reconstituer(
+                2L,
+                "KOFFI",
+                "Paul",
+                NumeroTelephone.of("0700000002"),
+                Profil.SUBSCRIBER,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("100000"),
+                Money.of("200000"),
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000001")))
+                .thenReturn(Optional.of(agent));
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000002")))
+                .thenReturn(Optional.of(client));
+
+        // ========= ACT + ASSERT =========
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> createDepotService.effectuerDepot(request)
+                );
+
+        assertEquals(
+                "Solde insuffisant.",
+                exception.getMessage());
+
+        verify(compteRepository, never())
+                .save(any());
+
+        verify(transactionRepository, never())
+                .save(any());
+
+    }
+    
+    
+    @Test
+    void effectuerDepot_plafondClientDepasse() {
+
+        // ========= ARRANGE =========
+
+        CreateDepotRequest request = new CreateDepotRequest();
+        request.setNumeroAgent("0700000001");
+        request.setNumeroClient("0700000002");
+        request.setMontant(new BigDecimal("20000"));
+        request.setTypeTransaction(TypeTransaction.DEPOT);
+        request.setMotif("Dépôt en espèces");
+
+        Compte agent = Compte.reconstituer(
+                1L,
+                "YAO",
+                "Jean",
+                NumeroTelephone.of("0700000001"),
+                Profil.AGENT,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("500000"),
+                Money.of("100000000"),
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        Compte client = Compte.reconstituer(
+                2L,
+                "KOFFI",
+                "Paul",
+                NumeroTelephone.of("0700000002"),
+                Profil.SUBSCRIBER,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("190000"),     // Solde actuel
+                Money.of("200000"),     // Plafond
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000001")))
+                .thenReturn(Optional.of(agent));
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000002")))
+                .thenReturn(Optional.of(client));
+
+        // ========= ACT + ASSERT =========
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> createDepotService.effectuerDepot(request)
+                );
+
+        assertEquals(
+                "Le plafond du compte serait dépassé.",
+                exception.getMessage());
+
+        verify(compteRepository, never())
+                .save(any());
+
+        verify(transactionRepository, never())
+                .save(any());
+
+    }
 }

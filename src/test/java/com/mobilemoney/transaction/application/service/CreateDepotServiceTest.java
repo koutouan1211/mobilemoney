@@ -223,4 +223,125 @@ public class CreateDepotServiceTest {
                 .save(any());
 
     }
+    
+    
+    @Test
+    void effectuerDepot_memeCompte() {
+
+        // ========= ARRANGE =========
+
+        CreateDepotRequest request = new CreateDepotRequest();
+        request.setNumeroAgent("0700000001");
+        request.setNumeroClient("0700000001");
+        request.setMontant(new BigDecimal("50000"));
+        request.setTypeTransaction(TypeTransaction.DEPOT);
+        request.setMotif("Dépôt en espèces");
+
+        Compte agent = Compte.reconstituer(
+                1L,
+                "YAO",
+                "Jean",
+                NumeroTelephone.of("0700000001"),
+                Profil.AGENT,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("500000"),
+                Money.of("100000000"),
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000001")))
+                .thenReturn(Optional.of(agent));
+
+        // ========= ACT + ASSERT =========
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> createDepotService.effectuerDepot(request)
+                );
+
+        assertEquals(
+                "Impossible d'effectuer un dépôt sur le même compte.",
+                exception.getMessage());
+
+        verify(compteRepository, never())
+                .save(any());
+
+        verify(transactionRepository, never())
+                .save(any());
+
+    }
+    
+    
+    
+    @Test
+    void effectuerDepot_typeTransactionInvalide() {
+
+        // ========= ARRANGE =========
+
+        CreateDepotRequest request = new CreateDepotRequest();
+        request.setNumeroAgent("0700000001");
+        request.setNumeroClient("0700000002");
+        request.setMontant(new BigDecimal("50000"));
+
+        // volontairement faux
+        request.setTypeTransaction(TypeTransaction.TRANSFERT_DOMESTIQUE);
+
+        request.setMotif("Dépôt en espèces");
+
+        Compte agent = Compte.reconstituer(
+                1L,
+                "YAO",
+                "Jean",
+                NumeroTelephone.of("0700000001"),
+                Profil.AGENT,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("500000"),
+                Money.of("100000000"),
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        Compte client = Compte.reconstituer(
+                2L,
+                "KOFFI",
+                "Paul",
+                NumeroTelephone.of("0700000002"),
+                Profil.SUBSCRIBER,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("100000"),
+                Money.of("200000"),
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000001")))
+                .thenReturn(Optional.of(agent));
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000002")))
+                .thenReturn(Optional.of(client));
+
+        // ========= ACT + ASSERT =========
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> createDepotService.effectuerDepot(request)
+                );
+
+        assertEquals(
+                "Type de transaction invalide pour un dépôt.",
+                exception.getMessage());
+
+        verify(compteRepository, never())
+                .save(any());
+
+        verify(transactionRepository, never())
+                .save(any());
+
+    }
 }

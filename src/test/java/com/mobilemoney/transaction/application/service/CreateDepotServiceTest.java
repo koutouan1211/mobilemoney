@@ -24,6 +24,8 @@ import com.mobilemoney.account.domain.enums.TypePersonne;
 import com.mobilemoney.account.domain.repository.CompteRepository;
 import com.mobilemoney.account.domain.valueobject.Money;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
+import com.mobilemoney.common.exception.CompteAgentInactifException;
+import com.mobilemoney.common.exception.CompteClientInactifException;
 import com.mobilemoney.transaction.application.dto.CreateDepotRequest;
 import com.mobilemoney.transaction.application.dto.DepotResponse;
 import com.mobilemoney.transaction.domain.entity.Transfert;
@@ -344,4 +346,130 @@ public class CreateDepotServiceTest {
                 .save(any());
 
     }
+    
+    
+    @Test
+    void effectuerDepot_compteAgentInactif() {
+
+        // ========= ARRANGE =========
+
+        CreateDepotRequest request = new CreateDepotRequest();
+        request.setNumeroAgent("0700000001");
+        request.setNumeroClient("0700000002");
+        request.setMontant(new BigDecimal("50000"));
+        request.setTypeTransaction(TypeTransaction.DEPOT);
+        request.setMotif("Dépôt en espèces");
+
+        Compte agent = Compte.reconstituer(
+                1L,
+                "YAO",
+                "Jean",
+                NumeroTelephone.of("0700000001"),
+                Profil.AGENT,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("500000"),
+                Money.of("100000000"),
+                StatutCompte.EN_ATTENTE, // <-- Agent inactif
+                LocalDateTime.now()
+        );
+
+        Compte client = Compte.reconstituer(
+                2L,
+                "KOFFI",
+                "Paul",
+                NumeroTelephone.of("0700000002"),
+                Profil.SUBSCRIBER,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("100000"),
+                Money.of("200000"),
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000001")))
+                .thenReturn(Optional.of(agent));
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000002")))
+                .thenReturn(Optional.of(client));
+
+        // ========= ACT + ASSERT =========
+
+        assertThrows(
+                CompteAgentInactifException.class,
+                () -> createDepotService.effectuerDepot(request)
+        );
+
+        verify(compteRepository, never())
+                .save(any());
+
+        verify(transactionRepository, never())
+                .save(any());
+
+    }
+    
+    
+    @Test
+    void effectuerDepot_compteClientInactif() {
+
+        // ========= ARRANGE =========
+
+        CreateDepotRequest request = new CreateDepotRequest();
+        request.setNumeroAgent("0700000001");
+        request.setNumeroClient("0700000002");
+        request.setMontant(new BigDecimal("50000"));
+        request.setTypeTransaction(TypeTransaction.DEPOT);
+        request.setMotif("Dépôt en espèces");
+
+        Compte agent = Compte.reconstituer(
+                1L,
+                "YAO",
+                "Jean",
+                NumeroTelephone.of("0700000001"),
+                Profil.AGENT,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("500000"),
+                Money.of("100000000"),
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        Compte client = Compte.reconstituer(
+                2L,
+                "KOFFI",
+                "Paul",
+                NumeroTelephone.of("0700000002"),
+                Profil.SUBSCRIBER,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("100000"),
+                Money.of("200000"),
+                StatutCompte.EN_ATTENTE, // Client inactif
+                LocalDateTime.now()
+        );
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000001")))
+                .thenReturn(Optional.of(agent));
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000002")))
+                .thenReturn(Optional.of(client));
+
+        // ========= ACT + ASSERT =========
+
+        assertThrows(
+                CompteClientInactifException.class,
+                () -> createDepotService.effectuerDepot(request)
+        );
+
+        verify(compteRepository, never())
+                .save(any());
+
+        verify(transactionRepository, never())
+                .save(any());
+
+    }
+    
+    
 }

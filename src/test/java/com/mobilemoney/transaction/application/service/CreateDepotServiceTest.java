@@ -2,6 +2,7 @@ package com.mobilemoney.transaction.application.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +30,7 @@ import com.mobilemoney.transaction.domain.entity.Transfert;
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 import com.mobilemoney.transaction.domain.repository.TransfertRepository;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateDepotServiceTest {
@@ -127,6 +129,44 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository)
                 .save(any(Transfert.class));
+
+    }
+    
+    
+    
+    @Test
+    void effectuerDepot_compteAgentIntrouvable() {
+
+        // ========= ARRANGE =========
+
+        CreateDepotRequest request = new CreateDepotRequest();
+        request.setNumeroAgent("0700000001");
+        request.setNumeroClient("0700000002");
+        request.setMontant(new BigDecimal("50000"));
+        request.setTypeTransaction(TypeTransaction.DEPOT);
+        request.setMotif("Dépôt en espèces");
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000001")))
+                .thenReturn(Optional.empty());
+
+        // ========= ACT + ASSERT =========
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> createDepotService.effectuerDepot(request)
+                );
+
+        assertEquals(
+                "Compte agent introuvable.",
+                exception.getMessage());
+
+        verify(compteRepository, never())
+                .save(any());
+
+        verify(transactionRepository, never())
+                .save(any());
 
     }
 }

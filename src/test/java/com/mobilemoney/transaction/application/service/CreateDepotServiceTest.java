@@ -169,4 +169,58 @@ public class CreateDepotServiceTest {
                 .save(any());
 
     }
+    
+    
+    @Test
+    void effectuerDepot_compteClientIntrouvable() {
+
+        // ========= ARRANGE =========
+
+        CreateDepotRequest request = new CreateDepotRequest();
+        request.setNumeroAgent("0700000001");
+        request.setNumeroClient("0700000002");
+        request.setMontant(new BigDecimal("50000"));
+        request.setTypeTransaction(TypeTransaction.DEPOT);
+        request.setMotif("Dépôt en espèces");
+
+        Compte agent = Compte.reconstituer(
+                1L,
+                "YAO",
+                "Jean",
+                NumeroTelephone.of("0700000001"),
+                Profil.AGENT,
+                TypePersonne.PERSONNE_PHYSIQUE,
+                Money.of("500000"),
+                Money.of("100000000"),
+                StatutCompte.ACTIF,
+                LocalDateTime.now()
+        );
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000001")))
+                .thenReturn(Optional.of(agent));
+
+        when(compteRepository.findByNumeroTelephone(
+                NumeroTelephone.of("0700000002")))
+                .thenReturn(Optional.empty());
+
+        // ========= ACT + ASSERT =========
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> createDepotService.effectuerDepot(request)
+                );
+
+        assertEquals(
+                "Compte client introuvable.",
+                exception.getMessage());
+
+        verify(compteRepository, never())
+                .save(any());
+
+        verify(transactionRepository, never())
+                .save(any());
+
+    }
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -39,20 +40,86 @@ public class DepotController {
     //effectuer depot 
     @PostMapping("/create")
     public String effectuerDepot(
-            @Valid CreateDepotRequest request,
-            BindingResult bindingResult,
-            Model model) {
+    		    @Valid
+    	        @ModelAttribute("depot")
+    	        CreateDepotRequest request,
+
+    	        BindingResult bindingResult,
+
+    	        Model model) {
 
         if (bindingResult.hasErrors()) {
             return "deposits/create";
         }
 
-        DepotResponse response =
-                createDepotUseCase.effectuerDepot(request);
+        //afficher les exceptions metier sur la page de formulaire et en bas de chaque champs
+        try {
+        	 DepotResponse response =
+                     createDepotUseCase.effectuerDepot(request);
 
-        model.addAttribute("recu", response);
+             model.addAttribute("recu", response);
 
-        return "deposits/recu";
+             return "deposits/recu";
+        }
+        catch (Exception e) {
+        	
+            String message = e.getMessage();
+
+            if (message.contains("agent")) {
+
+                bindingResult.rejectValue(
+                        "numeroAgent",
+                        "error.numeroAgent",
+                        message);
+
+            } else if (message.contains("client")) {
+
+                bindingResult.rejectValue(
+                        "numeroClient",
+                        "error.numeroClient",
+                        message);
+
+            } else if (message.contains("Solde")) {
+
+                bindingResult.rejectValue(
+                        "numeroAgent",
+                        "error.numeroAgent",
+                        message);
+
+            } else if (message.contains("plafond")) {
+
+                bindingResult.rejectValue(
+                        "montant",
+                        "error.montant",
+                        message);
+
+            } else if (message.contains("même compte")) {
+
+                bindingResult.rejectValue(
+                        "numeroClient",
+                        "error.numeroClient",
+                        message);
+
+            } else if (message.contains("Type")) {
+
+                bindingResult.rejectValue(
+                        "typeTransaction",
+                        "error.typeTransaction",
+                        message);
+
+            } else {
+
+                bindingResult.reject(
+                        "error.global",
+                        message);
+
+            }
+
+            
+            return "deposits/create";
+        }
+        
+        
     }
 
 }

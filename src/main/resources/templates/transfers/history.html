@@ -1,74 +1,256 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Historique des transferts</title>
+
+<meta charset="UTF-8">
+<title>Historique des transferts</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background:#f4f6f9;
+    padding:40px;
+
+}
+
+.container{
+
+    max-width:1200px;
+    margin:auto;
+    background:white;
+    padding:35px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+}
+
+h2{
+
+    text-align:center;
+    color:#2c3e50;
+    margin-bottom:30px;
+
+}
+
+.search{
+
+    display:flex;
+    gap:15px;
+    margin-bottom:30px;
+
+}
+
+.search input{
+
+    flex:1;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+
+}
+
+.search input:focus{
+
+    outline:none;
+    border-color:#2ecc71;
+
+}
+
+.search button{
+
+    padding:12px 25px;
+    border:none;
+    border-radius:6px;
+    background:#27ae60;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+
+}
+
+.search button:hover{
+
+    background:#1e8449;
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:#27ae60;
+    color:white;
+
+}
+
+th,
+td{
+
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+
+}
+
+tbody tr:nth-child(even){
+
+    background:#f8f9fa;
+
+}
+
+tbody tr:hover{
+
+    background:#ecfdf3;
+
+}
+
+.empty{
+
+    text-align:center;
+    color:#7f8c8d;
+    padding:25px;
+    font-style:italic;
+
+}
+
+.menu{
+
+    display:flex;
+    justify-content:space-between;
+    margin-top:30px;
+
+}
+
+.menu a{
+
+    text-decoration:none;
+    color:#2980b9;
+    font-weight:bold;
+
+}
+
+.menu a:hover{
+
+    text-decoration:underline;
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h2>Historique des transferts</h2>
+<div class="container">
 
- 
-<form th:action="@{/transfers/history/search}" method="get">
+<h2>HISTORIQUE DES TRANSFERTS</h2>
 
-    <label>Numéro de téléphone :</label>
+<form
+th:action="@{/transfers/history/search}"
+method="get"
+class="search">
 
-    <input type="text"
-           name="numeroTelephone"
-           th:value="${numeroTelephone}" />
+<input
+type="text"
+name="numeroTelephone"
+placeholder="Entrez un numéro de téléphone"
+th:value="${numeroTelephone}"/>
 
-    <button type="submit">
-        Rechercher
-    </button>
+<button type="submit">
+
+Rechercher
+
+</button>
 
 </form>
 
-<br>
+<table
+th:if="${historique != null and !historique.isEmpty()}">
 
+<thead>
 
+<tr>
 
-<table border="1"
-       th:if="${historique != null and !historique.isEmpty()}">
+<th>Référence</th>
+<th>Type</th>
+<th>Source</th>
+<th>Destination</th>
+<th>Montant</th>
+<th>Frais</th>
+<th>Statut</th>
+<th>Date</th>
 
-    <thead>
-    <tr>
-        <th>Référence</th>
-        <th>Type</th>
-        <th>Source</th>
-        <th>Destination</th>
-        <th>Montant</th>
-        <th>Frais</th>
-        <th>Statut</th>
-        <th>Date</th>
-    </tr>
-    </thead>
+</tr>
 
-    <tbody>
+</thead>
 
-    <tr th:each="transfert : ${historique}">
+<tbody>
 
-        <td th:text="${transfert.reference}"></td>
+<tr th:each="transfert : ${historique}">
 
-        <td th:text="${transfert.typeTransaction}"></td>
+<td th:text="${transfert.reference}"></td>
 
-        <td th:text="${transfert.compteSource}"></td>
+<td th:text="${transfert.typeTransaction}"></td>
 
-        <td th:text="${transfert.compteDestination}"></td>
+<td th:text="${transfert.compteSource}"></td>
 
-        <td th:text="${transfert.montant}"></td>
+<td th:text="${transfert.compteDestination}"></td>
 
-        <td th:text="${transfert.frais}"></td>
+<td th:text="${transfert.montant}"></td>
 
-        <td th:text="${transfert.statut}"></td>
+<td th:text="${transfert.frais}"></td>
 
-        <td th:text="${transfert.dateTransaction}"></td>
+<td th:text="${transfert.statut}"></td>
 
-    </tr>
+<td th:text="${#temporals.format(transfert.dateTransaction,'dd/MM/yyyy HH:mm')}"></td>
 
-    </tbody>
+</tr>
+
+</tbody>
 
 </table>
-<a th:href="@{/transfers/create}" class="btn btn-primary">
-    Retour au transfert
+
+<div
+class="empty"
+th:if="${historique == null or historique.isEmpty()}">
+
+Aucun transfert trouvé.
+
+</div>
+
+<div class="menu">
+
+<a th:href="@{/transfers/create}">
+
+← Retour au transfert
+
 </a>
+
+<a th:href="@{/}">
+
+Accueil
+
+</a>
+
+</div>
+
+</div>
+
 </body>
+
 </html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Historique des dépôts</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background:#f4f6f9;
+    padding:40px;
+
+}
+
+.container{
+
+    max-width:1100px;
+    margin:auto;
+    background:white;
+    padding:35px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+}
+
+h2{
+
+    text-align:center;
+    color:#2c3e50;
+    margin-bottom:30px;
+
+}
+
+.search{
+
+    display:flex;
+    gap:15px;
+    margin-bottom:30px;
+
+}
+
+.search input{
+
+    flex:1;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+
+}
+
+.search input:focus{
+
+    outline:none;
+    border-color:#27ae60;
+
+}
+
+.search button{
+
+    padding:12px 25px;
+    border:none;
+    border-radius:6px;
+    background:#27ae60;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+
+}
+
+.search button:hover{
+
+    background:#1e8449;
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:#27ae60;
+    color:white;
+
+}
+
+th,
+td{
+
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+
+}
+
+tbody tr:nth-child(even){
+
+    background:#f8f9fa;
+
+}
+
+tbody tr:hover{
+
+    background:#ecfdf3;
+
+}
+
+.empty{
+
+    text-align:center;
+    color:#7f8c8d;
+    padding:25px;
+    font-style:italic;
+
+}
+
+.menu{
+
+    display:flex;
+    justify-content:space-between;
+    margin-top:30px;
+
+}
+
+.menu a{
+
+    text-decoration:none;
+    color:#2980b9;
+    font-weight:bold;
+
+}
+
+.menu a:hover{
+
+    text-decoration:underline;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>HISTORIQUE DES DÉPÔTS</h2>
+
+<form
+th:action="@{/deposits/history/search}"
+method="get"
+class="search">
+
+<input
+type="text"
+name="numeroAgent"
+placeholder="Numéro de téléphone de l'agent"
+th:value="${numeroAgent}" />
+
+<button type="submit">
+
+Rechercher
+
+</button>
+
+</form>
+
+<table
+th:if="${historique != null and !historique.isEmpty()}">
+
+<thead>
+
+<tr>
+
+<th>Référence</th>
+<th>Agent</th>
+<th>Client</th>
+<th>Montant</th>
+<th>Statut</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr
+th:each="depot : ${historique}">
+
+<td th:text="${depot.reference}"></td>
+
+<td th:text="${depot.numeroAgent}"></td>
+
+<td th:text="${depot.numeroClient}"></td>
+
+<td th:text="${depot.montant}"></td>
+
+<td th:text="${depot.statut}"></td>
+
+<td th:text="${#temporals.format(depot.dateOperation,'dd/MM/yyyy HH:mm')}"></td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<div
+class="empty"
+th:if="${historique == null or historique.isEmpty()}">
+
+Aucun dépôt trouvé.
+
+</div>
+
+<div class="menu">
+
+<a th:href="@{/deposits/create}">
+
+← Retour au dépôt
+
+</a>
+
+<a th:href="@{/withdrawals/create}">
+
+Effectuer un retrait →
+
+</a>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.transaction.domain.entity.Transfert;
+import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 import com.mobilemoney.transaction.domain.repository.TransfertRepository;
 import com.mobilemoney.transaction.domain.valueobject.ReferenceTransfert;
 import com.mobilemoney.transaction.infrastructure.entity.TransfertEntity;
@@ -60,5 +61,19 @@ public class TransfertRepositoryAdapter  implements TransfertRepository {
                 .stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
+    }
+    
+    
+    @Override
+    public List<Transfert> findDepotByNumeroAgent(
+            NumeroTelephone numeroAgent) {
+
+        return jpaRepository
+                .findByCompteSourceAndTypeTransaction(
+                        numeroAgent.getValue(),
+                        TypeTransaction.DEPOT)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 }

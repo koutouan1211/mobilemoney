@@ -16,5 +16,8 @@ public interface TransfertRepository {
 	    
 	    List<Transfert> findHistoriqueParNumero(
 	            NumeroTelephone numeroTelephone);
+	    
+	    List<Transfert> findDepotByNumeroAgent(
+	            NumeroTelephone numeroAgent);
 }
 

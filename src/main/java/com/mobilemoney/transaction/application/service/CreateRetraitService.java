@@ -9,10 +9,13 @@ import com.mobilemoney.common.exception.CompteAgentInactifException;
 import com.mobilemoney.common.exception.CompteClientInactifException;
 import com.mobilemoney.transaction.application.dto.CreateRetraitRequest;
 import com.mobilemoney.transaction.application.dto.RetraitResponse;
+import com.mobilemoney.transaction.application.usecase.CreateRetraitUseCase;
+import com.mobilemoney.transaction.domain.entity.Transfert;
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 import com.mobilemoney.transaction.domain.repository.TransfertRepository;
+import com.mobilemoney.transaction.domain.valueobject.ReferenceTransfert;
 
-public class CreateRetraitService {
+public class CreateRetraitService implements CreateRetraitUseCase{
 
 	//création de constructeur et injections des classes 
 	public final CompteRepository compteRepository;
@@ -76,6 +79,53 @@ public class CreateRetraitService {
 		
 		//debiter le compte du client 
 		compteClient.debiter(montant);
+		//crediter le compte agent
+		compteAgent.crediter(montant);
+		
+		//sauvegarder les comptes et les transactions
+		compteRepository.save(compteAgent);
+
+		compteRepository.save(compteClient);
+		
+		//generer une reference
+		ReferenceTransfert reference =
+		        ReferenceTransfert.generer();
+		
+		//creation de la transaction de retrait
+		Transfert retrait =
+		        Transfert.creer(
+		                reference,
+		                request.getTypeTransaction(),
+		                montant,
+		                Money.zero(),
+		                compteAgent.getNumeroTelephone(),
+		                compteClient.getNumeroTelephone(),
+		                request.getMotif());
+		
+		//sauvegarder la transaction
+		retrait =
+		        transactionRepository.save(retrait);
+		
+		//retour du reçu
+		
+		return new RetraitResponse(
+
+		        reference.getValue(),
+
+		        compteAgent.getNumeroTelephone().getValue(),
+
+		        compteClient.getNumeroTelephone().getValue(),
+
+		        montant.toString(),
+
+		        compteClient.getSolde().toString(),
+
+		        retrait.getStatut().name(),
+
+		        retrait.getDateTransaction()
+
+		);
+		
 	}
 
 }

@@ -16,6 +16,9 @@ public class CreateAccountRequest {
 
     @NotBlank(message = "Le numéro de téléphone est obligatoire.")
     private String numeroTelephone;
+    
+    @NotBlank(message = "Le mot de passe est obligatoire.")
+    private String motDePasse;
 
     @NotNull(message = "Le profil est obligatoire.")
     private Profil profil;
@@ -64,6 +67,14 @@ public class CreateAccountRequest {
 
 	public void setTypePersonne(TypePersonne typePersonne) {
 		this.typePersonne = typePersonne;
+	}
+
+	public String getMotDePasse() {
+		return motDePasse;
+	}
+
+	public void setMotDePasse(String motDePasse) {
+		this.motDePasse = motDePasse;
 	}
     
     

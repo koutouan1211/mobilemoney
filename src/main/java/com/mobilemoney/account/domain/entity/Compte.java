@@ -4,6 +4,7 @@ import com.mobilemoney.account.domain.enums.Profil;
 import com.mobilemoney.account.domain.enums.StatutCompte;
 import com.mobilemoney.account.domain.enums.TypePersonne;
 import com.mobilemoney.account.domain.valueobject.Money;
+import com.mobilemoney.account.domain.valueobject.MotDePasse;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,8 @@ public class Compte {
     private String prenom;
 
     private NumeroTelephone numeroTelephone;
+    
+    private MotDePasse motDePasse;
 
     private Profil profil;
 
@@ -41,6 +44,7 @@ public class Compte {
             String nom,
             String prenom,
             NumeroTelephone numeroTelephone,
+            MotDePasse motDePasse,
             TypePersonne typePersonne) {
 
         Objects.requireNonNull(profil, "Le profil est obligatoire.");
@@ -51,6 +55,7 @@ public class Compte {
                             nom,
                             prenom,
                             numeroTelephone,
+                            motDePasse,
                             typePersonne
                     );
 
@@ -59,10 +64,12 @@ public class Compte {
                             nom,
                             prenom,
                             numeroTelephone,
+                            motDePasse,
                             typePersonne
                     );
         };
     }
+    
     
     
     //cretion d'un compte suscriber
@@ -70,11 +77,13 @@ public class Compte {
             String nom,
             String prenom,
             NumeroTelephone numeroTelephone,
+            MotDePasse motDePasse,
             TypePersonne typePersonne) {
 
         Objects.requireNonNull(nom);
         Objects.requireNonNull(prenom);
         Objects.requireNonNull(numeroTelephone);
+        Objects.requireNonNull( motDePasse);
         Objects.requireNonNull(typePersonne);
 
         if (typePersonne != TypePersonne.PERSONNE_PHYSIQUE) {
@@ -88,6 +97,7 @@ public class Compte {
         compte.nom = nom;
         compte.prenom = prenom;
         compte.numeroTelephone = numeroTelephone;
+        compte.motDePasse=motDePasse;
         compte.profil = Profil.SUBSCRIBER;
         compte.typePersonne = typePersonne;
 
@@ -107,11 +117,13 @@ public class Compte {
             String nom,
             String prenom,
             NumeroTelephone numeroTelephone,
+            MotDePasse motDePasse,
             TypePersonne typePersonne) {
 
         Objects.requireNonNull(nom);
         Objects.requireNonNull(prenom);
         Objects.requireNonNull(numeroTelephone);
+        Objects.requireNonNull(motDePasse);
         Objects.requireNonNull(typePersonne);
 
         Compte compte = new Compte();
@@ -119,6 +131,7 @@ public class Compte {
         compte.nom = nom;
         compte.prenom = prenom;
         compte.numeroTelephone = numeroTelephone;
+        compte.motDePasse=motDePasse;
         compte.profil = Profil.AGENT;
         compte.typePersonne = typePersonne;
 
@@ -139,6 +152,7 @@ public class Compte {
             String nom,
             String prenom,
             NumeroTelephone numeroTelephone,
+            MotDePasse motDePasse,
             Profil profil,
             TypePersonne typePersonne,
             Money solde,
@@ -152,6 +166,7 @@ public class Compte {
         compte.nom = nom;
         compte.prenom = prenom;
         compte.numeroTelephone = numeroTelephone;
+        compte.motDePasse=motDePasse;
         compte.profil = profil;
         compte.typePersonne = typePersonne;
         compte.solde = solde;
@@ -259,6 +274,11 @@ public class Compte {
 
 	public LocalDateTime getDateCreation() {
 		return dateCreation;
+	}
+
+
+	public MotDePasse getMotDePasse() {
+		return motDePasse;
 	}
     
 

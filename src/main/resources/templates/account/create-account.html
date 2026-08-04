@@ -48,6 +48,26 @@
 	</div>
 
     <br><br>
+	
+	<div class="form-group">
+
+	    <label>Mot de passe</label>
+
+	    <input
+	        type="password"
+	        th:field="*{motDePasse}"
+	        maxlength="4"
+	        placeholder="Code PIN à 4 chiffres">
+
+	    <small
+	        class="error"
+	        th:if="${#fields.hasErrors('motDePasse')}"
+	        th:errors="*{motDePasse}">
+	    </small>
+
+	</div>
+	
+	<br><br>
 
     <label>Profil</label>
 

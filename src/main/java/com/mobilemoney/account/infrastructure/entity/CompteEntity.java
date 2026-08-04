@@ -24,6 +24,9 @@ public class CompteEntity {
 
     @Column(nullable = false, unique = true)
     private String numeroTelephone;
+    
+    @Column(name = "mot_de_passe", nullable = false)
+    private String motDePasse;
 
     @Enumerated(EnumType.STRING)
     private Profil profil;
@@ -126,6 +129,14 @@ public class CompteEntity {
 
 	public void setDateCreation(LocalDateTime dateCreation) {
 		this.dateCreation = dateCreation;
+	}
+
+	public String getMotDePasse() {
+		return motDePasse;
+	}
+
+	public void setMotDePasse(String motDePasse) {
+		this.motDePasse = motDePasse;
 	}
     
     

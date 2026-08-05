@@ -6,7 +6,9 @@ public final class MotDePasse {
 
     private final String valeur;
 
-    private MotDePasse(String valeur) {
+    private MotDePasse(
+            String valeur,
+            boolean hash) {
 
         Objects.requireNonNull(
                 valeur,
@@ -17,7 +19,9 @@ public final class MotDePasse {
                     "Le mot de passe est obligatoire.");
         }
 
-        if (!valeur.matches("\\d{4}")) {
+        // Validation uniquement pour un nouveau PIN
+        if (!hash && !valeur.matches("\\d{4}")) {
+
             throw new IllegalArgumentException(
                     "Le mot de passe doit contenir exactement 4 chiffres.");
         }
@@ -26,7 +30,18 @@ public final class MotDePasse {
     }
 
     public static MotDePasse of(String valeur) {
-        return new MotDePasse(valeur);
+
+        return new MotDePasse(
+                valeur,
+                false);
+    }
+    
+    //permet de ne pas valider le mot de passe a 4 chiffre lorsque celui ci provien directement de la base de donnée
+    public static MotDePasse depuisHash(String hash) {
+
+        return new MotDePasse(
+                hash,
+                true);
     }
 
     public String getValeur() {

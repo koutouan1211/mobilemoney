@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.mobilemoney.account.domain.entity.Compte;
 import com.mobilemoney.account.domain.valueobject.Money;
+import com.mobilemoney.account.domain.valueobject.MotDePasse;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.account.infrastructure.entity.CompteEntity;
 
@@ -22,6 +23,9 @@ public class CompteMapper {
         entity.setNumeroTelephone(
                 compte.getNumeroTelephone().getValue());
 
+        entity.setMotDePasse(
+                compte.getMotDePasse().getValeur());
+        
         entity.setProfil(compte.getProfil());
 
         entity.setTypePersonne(
@@ -55,6 +59,9 @@ public class CompteMapper {
                 NumeroTelephone.of(
                         entity.getNumeroTelephone()),
 
+                MotDePasse.depuisHash(
+                        entity.getMotDePasse()),
+                
                 entity.getProfil(),
 
                 entity.getTypePersonne(),

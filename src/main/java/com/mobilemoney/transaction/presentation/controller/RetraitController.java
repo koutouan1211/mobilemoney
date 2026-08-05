@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -47,8 +48,10 @@ public class RetraitController {
     @PostMapping("/create")
     public String effectuerRetrait(
 
-            @Valid
-            CreateRetraitRequest request,
+    		@Valid
+    		@ModelAttribute
+    		("retrait")
+    		CreateRetraitRequest request,
 
             BindingResult bindingResult,
 
@@ -79,20 +82,32 @@ public class RetraitController {
                         "numeroAgent",
                         "error.numeroAgent",
                         message);
+                
+                
 
-            } else if (message.contains("client")) {
+            } 
+            
+            else if (message.contains("mot de passe")) {
+
+                bindingResult.rejectValue(
+                        "motDePasse",
+                        "error.motDePasse",
+                        message);
+            }
+            
+            else if (message.contains("client")) {
+
+            	bindingResult.rejectValue(
+            	        "numeroClient",
+            	        "error.numeroClient",
+            	        message);
+
+            } else if (message.contains("Solde")) {
 
             	bindingResult.rejectValue(
             	        "montant",
             	        "error.montant",
             	        message);
-
-            } else if (message.contains("Solde")) {
-
-                bindingResult.rejectValue(
-                        "numeroClient",
-                        "error.numeroClient",
-                        message);
 
             } else if (message.contains("même compte")) {
 

@@ -3,6 +3,7 @@ package com.mobilemoney.transaction.application.service;
 import com.mobilemoney.account.domain.entity.Compte;
 import com.mobilemoney.account.domain.enums.StatutCompte;
 import com.mobilemoney.account.domain.repository.CompteRepository;
+import com.mobilemoney.account.domain.service.PasswordEncoder;
 import com.mobilemoney.account.domain.valueobject.Money;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.common.exception.CompteAgentInactifException;
@@ -21,10 +22,12 @@ public class CreateRetraitService implements CreateRetraitUseCase{
 	//création de constructeur et injections des classes 
 	public final CompteRepository compteRepository;
 	public final TransfertRepository transactionRepository;
+	private final PasswordEncoder passwordEncoder;
 	
-	public CreateRetraitService(CompteRepository compteRepository,TransfertRepository transactionRepository) {
+	public CreateRetraitService(CompteRepository compteRepository,TransfertRepository transactionRepository,PasswordEncoder passwordEncoder) {
 		this.compteRepository=compteRepository;
 		this.transactionRepository=transactionRepository;
+		this.passwordEncoder=passwordEncoder;
 	}
 	
 	//la methode du use case 
@@ -77,6 +80,10 @@ public class CreateRetraitService implements CreateRetraitUseCase{
 		    throw new CompteClientInactifException();
 		}
 		
+		//verifier le code PIN
+		compteClient.verifierMotDePasse(
+		        request.getMotDePasse(),
+		        passwordEncoder);
 		
 		//debiter le compte du client 
 		compteClient.debiter(montant);

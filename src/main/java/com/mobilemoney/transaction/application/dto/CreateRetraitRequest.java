@@ -15,6 +15,9 @@ public class CreateRetraitRequest {
 
     @NotBlank(message = "Le numéro du client est obligatoire.")
     private String numeroClient;
+    
+    @NotBlank(message = "Le mot de passe est obligatoire.")
+    private String motDePasse;
 
     @NotNull(message = "Le montant est obligatoire.")
     @DecimalMin(value = "100", message = "Le montant minimum est de 100 FCFA.")
@@ -71,4 +74,13 @@ public class CreateRetraitRequest {
         this.motif = motif;
     }
 
+	public String getMotDePasse() {
+		return motDePasse;
+	}
+
+	public void setMotDePasse(String motDePasse) {
+		this.motDePasse = motDePasse;
+	}
+
+    
 }

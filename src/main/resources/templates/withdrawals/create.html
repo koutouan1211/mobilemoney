@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 
 <meta charset="UTF-8">
-<title>Effectuer un dépôt</title>
+
+<title>Effectuer un retrait</title>
 
 <link rel="stylesheet"
       th:href="@{/css/form.css}">
@@ -14,11 +16,11 @@
 
 <div class="card">
 
-<h2>DEPOT D'ARGENT</h2>
+<h2>RETRAIT D'ARGENT</h2>
 
 <form
-th:action="@{/deposits/create}"
-th:object="${depot}"
+th:action="@{/withdrawals/create}"
+th:object="${retrait}"
 method="post">
 
 <div class="form-group">
@@ -37,7 +39,6 @@ th:errors="*{numeroAgent}">
 
 </div>
 
-
 <div class="form-group">
 
 <label>Numéro du Client</label>
@@ -54,6 +55,24 @@ th:errors="*{numeroClient}">
 
 </div>
 
+<div class="form-group">
+
+<label>Code PIN du Client</label>
+
+<input
+type="password"
+maxlength="4"
+inputmode="numeric"
+autocomplete="off"
+th:field="*{motDePasse}">
+
+<div
+class="error"
+th:if="${#fields.hasErrors('motDePasse')}"
+th:errors="*{motDePasse}">
+</div>
+
+</div>
 
 <div class="form-group">
 
@@ -71,7 +90,6 @@ th:errors="*{montant}">
 
 </div>
 
-
 <div class="form-group">
 
 <label>Motif</label>
@@ -80,17 +98,21 @@ th:errors="*{montant}">
 type="text"
 th:field="*{motif}">
 
+<div
+class="error"
+th:if="${#fields.hasErrors('motif')}"
+th:errors="*{motif}">
 </div>
 
+</div>
 
 <input
 type="hidden"
-th:field="*{typeTransaction}"
-th:value="${T(com.mobilemoney.transaction.domain.enums.TypeTransaction).DEPOT}"/>
+th:field="*{typeTransaction}">
 
 <button type="submit">
 
-Effectuer le dépôt
+Effectuer le retrait
 
 </button>
 
@@ -98,15 +120,12 @@ Effectuer le dépôt
 
 <div class="menu">
 
-<a th:href="@{/deposits/history}">
-Voir L'historique des transactions
-
+<a th:href="@{/}">
+Accueil
 </a>
 
-<a th:href="@{/withdrawals/create}">
-
-Effectuer un retrait
-
+<a th:href="@{/deposits/create}">
+Effectuer un dépôt
 </a>
 
 </div>

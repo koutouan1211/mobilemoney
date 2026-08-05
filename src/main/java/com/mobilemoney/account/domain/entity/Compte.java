@@ -3,9 +3,11 @@ package com.mobilemoney.account.domain.entity;
 import com.mobilemoney.account.domain.enums.Profil;
 import com.mobilemoney.account.domain.enums.StatutCompte;
 import com.mobilemoney.account.domain.enums.TypePersonne;
+import com.mobilemoney.account.domain.service.PasswordEncoder;
 import com.mobilemoney.account.domain.valueobject.Money;
 import com.mobilemoney.account.domain.valueobject.MotDePasse;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
+import com.mobilemoney.common.exception.MotDePasseIncorrectException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -215,6 +217,20 @@ public class Compte {
         this.solde = this.solde.subtract(montant);
     }
    
+    // verifier le mot de passe 
+    public void verifierMotDePasse(
+            String motDePasseSaisi,
+            PasswordEncoder passwordEncoder) {
+
+        if (!passwordEncoder.matches(
+                motDePasseSaisi,
+                this.motDePasse.getValeur())) {
+
+            throw new MotDePasseIncorrectException();
+        }
+
+    }
+    
     // le compte verifie son statut seule 
     
    // private void verifierCompteActif() {
@@ -226,6 +242,7 @@ public class Compte {
     //}
     
     
+
   //getter
 	public Long getId() {
 		return id;

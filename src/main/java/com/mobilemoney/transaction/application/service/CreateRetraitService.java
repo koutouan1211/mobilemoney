@@ -1,5 +1,7 @@
 package com.mobilemoney.transaction.application.service;
 
+import org.springframework.stereotype.Service;
+
 import com.mobilemoney.account.domain.entity.Compte;
 import com.mobilemoney.account.domain.enums.StatutCompte;
 import com.mobilemoney.account.domain.repository.CompteRepository;
@@ -16,6 +18,8 @@ import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 import com.mobilemoney.transaction.domain.repository.TransfertRepository;
 import com.mobilemoney.transaction.domain.valueobject.ReferenceTransfert;
 
+
+@Service
 public class CreateRetraitService implements CreateRetraitUseCase{
 
 	

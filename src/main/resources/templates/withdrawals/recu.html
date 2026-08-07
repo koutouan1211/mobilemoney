@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Reçu de Retrait</title>
+
+<link rel="stylesheet"
+      th:href="@{/css/form.css}">
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>REÇU DE RETRAIT</h2>
+
+<p>
+
+<strong>Référence :</strong>
+
+<span th:text="${recu.reference}"></span>
+
+</p>
+
+<p>
+
+<strong>Numéro Agent :</strong>
+
+<span th:text="${recu.numeroAgent}"></span>
+
+</p>
+
+<p>
+
+<strong>Numéro Client :</strong>
+
+<span th:text="${recu.numeroClient}"></span>
+
+</p>
+
+<p>
+
+<strong>Montant retiré :</strong>
+
+<span th:text="${recu.montant}"></span>
+
+</p>
+
+<p>
+
+<strong>Nouveau solde :</strong>
+
+<span th:text="${recu.nouveauSolde}"></span>
+
+</p>
+
+<p>
+
+<strong>Statut :</strong>
+
+<span th:text="${recu.statut}"></span>
+
+</p>
+
+<p>
+
+<strong>Date :</strong>
+
+<span th:text="${recu.dateOperation}"></span>
+
+</p>
+
+<div class="menu">
+
+<a th:href="@{/withdrawals/create}">
+Nouveau retrait
+</a>
+
+<a th:href="@{/}">
+Accueil
+</a>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

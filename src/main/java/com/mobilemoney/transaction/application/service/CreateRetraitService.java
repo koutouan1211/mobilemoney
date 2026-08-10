@@ -52,7 +52,7 @@ public class CreateRetraitService implements CreateRetraitUseCase{
 		//recherche du compte du client
 		Compte compteClient = compteRepository.findByNumeroTelephone(NumeroTelephone.of(request.getNumeroClient()))
 				.orElseThrow(()->  new IllegalArgumentException(
-                        "Compte agent introuvable."));
+                        "Compte client introuvable."));
 		
 		//l'agent ne peux pas s'envoyer de l'argent a lui meme(sur le meme numero) 
 		if (compteAgent.getNumeroTelephone()
@@ -137,6 +137,7 @@ public class CreateRetraitService implements CreateRetraitUseCase{
 		        retrait.getDateTransaction()
 
 		);
+		
 		
 	}
 

@@ -15,6 +15,8 @@ import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 
 import jakarta.validation.Valid;
 
+
+
 @Controller
 @RequestMapping("/withdrawals")
 public class RetraitController {
@@ -56,6 +58,9 @@ public class RetraitController {
             BindingResult bindingResult,
 
             Model model) {
+    	
+    	System.out.println("PIN reçu par Spring = [" + request.getMotDePasse() + "]");
+        System.out.println("Erreurs de validation = " + bindingResult.getAllErrors());
 
         if (bindingResult.hasErrors()) {
             return "withdrawals/create";
@@ -76,54 +81,13 @@ public class RetraitController {
 
             String message = e.getMessage();
 
-            if (message.contains("agent")) {
+            System.out.println("Exception attrapée : " + e.getClass().getName());
+            System.out.println("Message exact : [" + e.getMessage() + "]");
+            e.printStackTrace();
 
-                bindingResult.rejectValue(
-                        "numeroAgent",
-                        "error.numeroAgent",
-                        message);
-                
-                
-
-            } 
+            String messages = e.getMessage();
             
-            else if (message.contains("mot de passe")) {
-
-                bindingResult.rejectValue(
-                        "motDePasse",
-                        "error.motDePasse",
-                        message);
-            }
             
-            else if (message.contains("client")) {
-
-            	bindingResult.rejectValue(
-            	        "numeroClient",
-            	        "error.numeroClient",
-            	        message);
-
-            } else if (message.contains("Solde")) {
-
-            	bindingResult.rejectValue(
-            	        "montant",
-            	        "error.montant",
-            	        message);
-
-            } else if (message.contains("même compte")) {
-
-                bindingResult.rejectValue(
-                        "numeroClient",
-                        "error.numeroClient",
-                        message);
-
-            } else {
-
-                bindingResult.reject(
-                        "error.global",
-                        message);
-
-            }
-
             return "withdrawals/create";
         }
 

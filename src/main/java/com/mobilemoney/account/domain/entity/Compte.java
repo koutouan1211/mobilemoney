@@ -221,7 +221,8 @@ public class Compte {
     public void verifierMotDePasse(
             String motDePasseSaisi,
             PasswordEncoder passwordEncoder) {
-
+    	
+    	
         if (!passwordEncoder.matches(
                 motDePasseSaisi,
                 this.motDePasse.getValeur())) {

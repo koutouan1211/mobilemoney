@@ -59,9 +59,7 @@ public class RetraitController {
 
             Model model) {
     	
-    	System.out.println("PIN reçu par Spring = [" + request.getMotDePasse() + "]");
-        System.out.println("Erreurs de validation = " + bindingResult.getAllErrors());
-
+     
         if (bindingResult.hasErrors()) {
             return "withdrawals/create";
         }
@@ -81,13 +79,54 @@ public class RetraitController {
 
             String message = e.getMessage();
 
-            System.out.println("Exception attrapée : " + e.getClass().getName());
-            System.out.println("Message exact : [" + e.getMessage() + "]");
-            e.printStackTrace();
+            if (message.contains("agent")) {
 
-            String messages = e.getMessage();
+                bindingResult.rejectValue(
+                        "numeroAgent",
+                        "error.numeroAgent",
+                        message);
+                
+                
+
+            } 
             
+            else if (message.contains("mot de passe")) {
+
+                bindingResult.rejectValue(
+                        "motDePasse",
+                        "error.motDePasse",
+                        message);
+            }
             
+            else if (message.contains("client")) {
+
+            	bindingResult.rejectValue(
+            	        "numeroClient",
+            	        "error.numeroClient",
+            	        message);
+
+            } else if (message.contains("solde")) {
+
+            	bindingResult.rejectValue(
+            	        "montant",
+            	        "error.montant",
+            	        message);
+
+            } else if (message.contains("même compte")) {
+
+                bindingResult.rejectValue(
+                        "numeroClient",
+                        "error.numeroClient",
+                        message);
+
+            } else {
+
+                bindingResult.reject(
+                        "error.global",
+                        message);
+
+            }
+
             return "withdrawals/create";
         }
 

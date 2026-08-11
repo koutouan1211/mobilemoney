@@ -18,7 +18,9 @@
 
 <h2>RETRAIT D'ARGENT</h2>
 
+
 <form
+
 th:action="@{/withdrawals/create}"
 th:object="${retrait}"
 method="post">
@@ -115,6 +117,10 @@ th:field="*{typeTransaction}">
 Effectuer le retrait
 
 </button>
+
+<div th:if="${#fields.hasGlobalErrors()}" style="color:red; font-weight:bold; margin-bottom: 15px;">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+    </div>
 
 </form>
 

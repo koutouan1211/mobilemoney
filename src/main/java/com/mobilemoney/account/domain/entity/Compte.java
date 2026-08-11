@@ -193,7 +193,7 @@ public class Compte {
 
         if (nouveauSolde.isGreaterThan(this.plafond)) {
             throw new IllegalArgumentException(
-                    "Le plafond du compte serait dépassé.");
+                    "Le plafond du compte de l'agent sera dépassé.");
         }
 
         this.solde = nouveauSolde;
@@ -221,15 +221,19 @@ public class Compte {
     public void verifierMotDePasse(
             String motDePasseSaisi,
             PasswordEncoder passwordEncoder) {
-    	
-    	
+
+        String hash = this.motDePasse.getValeur();
+
+        System.out.println("PIN saisi = [" + motDePasseSaisi + "]");
+        System.out.println("Hash lu en base = [" + hash + "] (longueur = " + hash.length() + ")");
+        System.out.println("Résultat matches = " + passwordEncoder.matches(motDePasseSaisi, hash));
+
         if (!passwordEncoder.matches(
                 motDePasseSaisi,
-                this.motDePasse.getValeur())) {
+                hash)) {
 
             throw new MotDePasseIncorrectException();
         }
-
     }
     
     // le compte verifie son statut seule 

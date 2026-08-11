@@ -1,6 +1,5 @@
 package com.mobilemoney.transaction.presentation.controller;
 
-import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,13 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mobilemoney.transaction.application.dto.CreateDepotRequest;
-import com.mobilemoney.transaction.application.dto.DepotHistoryResponse;
 import com.mobilemoney.transaction.application.dto.DepotResponse;
 import com.mobilemoney.transaction.application.usecase.CreateDepotUseCase;
-import com.mobilemoney.transaction.application.usecase.ListDepotUseCase;
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 
 import jakarta.validation.Valid;
@@ -25,11 +21,10 @@ import jakarta.validation.Valid;
 public class DepotController {
 
     private final CreateDepotUseCase createDepotUseCase;
-    private final ListDepotUseCase listDepotUseCase;
+    
 
-    public DepotController(CreateDepotUseCase createDepotUseCase,ListDepotUseCase listDepotUseCase) {
+    public DepotController(CreateDepotUseCase createDepotUseCase) {
         this.createDepotUseCase = createDepotUseCase;
-        this.listDepotUseCase=listDepotUseCase;
     }
 
     // afficher le formulaire
@@ -130,32 +125,5 @@ public class DepotController {
     }
     
     
-    //afficher la page de depot d'un agent
-    
-    @GetMapping("/history")
-    public String afficherHistoriqueDepot() {
-
-        return "deposits/history";
-    }
-
-    //rechercher de l'historique de l'agent
-    @GetMapping("/history/search")
-    public String rechercherHistoriqueDepot(
-            @RequestParam String numeroAgent,
-            Model model) {
-
-        List<DepotHistoryResponse> historique =
-                listDepotUseCase.historique(numeroAgent);
-
-        model.addAttribute(
-                "numeroAgent",
-                numeroAgent);
-
-        model.addAttribute(
-                "historique",
-                historique);
-
-        return "deposits/history";
-    }
     
 }

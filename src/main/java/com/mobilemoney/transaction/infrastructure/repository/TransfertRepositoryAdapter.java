@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.transaction.domain.entity.Transfert;
-import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 import com.mobilemoney.transaction.domain.repository.TransfertRepository;
 import com.mobilemoney.transaction.domain.valueobject.ReferenceTransfert;
 import com.mobilemoney.transaction.infrastructure.entity.TransfertEntity;
@@ -49,7 +48,7 @@ public class TransfertRepositoryAdapter  implements TransfertRepository {
                 .map(mapper::toDomain);
     }
 
-    //verifie lh'istorique des transactions
+    //verifie lh'istorique des transactions d'un compte 
     @Override
     public List<Transfert> findHistoriqueParNumero(
             NumeroTelephone numeroTelephone) {
@@ -64,14 +63,15 @@ public class TransfertRepositoryAdapter  implements TransfertRepository {
     }
     
     
+    //historique des transactions global d'un agent
     @Override
-    public List<Transfert> findDepotByNumeroAgent(
+    public List<Transfert> findHistoriqueParNumeroAgent(
             NumeroTelephone numeroAgent) {
 
         return jpaRepository
-                .findByCompteSourceAndTypeTransaction(
+                .findByCompteSourceOrCompteDestination(
                         numeroAgent.getValue(),
-                        TypeTransaction.DEPOT)
+                        numeroAgent.getValue())
                 .stream()
                 .map(mapper::toDomain)
                 .toList();

@@ -26,7 +26,7 @@ public class ListDepotService implements ListDepotUseCase {
             String numeroAgent) {
 
         List<Transfert> depots =
-                transfertRepository.findDepotByNumeroAgent(
+                transfertRepository.findHistoriqueParNumeroAgent(
                         NumeroTelephone.of(numeroAgent));
 
         return depots.stream()

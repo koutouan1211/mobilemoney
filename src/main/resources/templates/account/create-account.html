@@ -1,113 +1,82 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Création d'un compte</title>
+    <link rel="stylesheet" th:href="@{/css/form.css}">
 </head>
 
 <body>
 
-<h2>Créer un compte Mobile Money</h2>
+<!-- 1. Ajout de la carte englobante -->
+<div class="card">
 
-<form th:action="@{/accounts/create}"
-      th:object="${createAccountRequest}"
-      method="post">
+    <h2>Créer un compte Mobile Money</h2>
 
-	  <label>Nom</label>
+    <form th:action="@{/accounts/create}" th:object="${createAccountRequest}" method="post">
 
-	  <input type="text" th:field="*{nom}">
+        <!-- 2. Bloc pour les erreurs globales (si nécessaire) -->
+        <div th:if="${#fields.hasGlobalErrors()}" class="error" style="margin-bottom: 15px; font-weight: bold;">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
 
-	  <div
-	       th:if="${#fields.hasErrors('nom')}"
-	       th:errors="*{nom}"
-	       style="color:red">
-	  </div>
+        <!-- Nom -->
+        <div class="form-group">
+            <label>Nom</label>
+            <input type="text" th:field="*{nom}">
+            <div class="error" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></div>
+        </div>
 
-    <br><br>
+        <!-- Prénom -->
+        <div class="form-group">
+            <label>Prénom</label>
+            <input type="text" th:field="*{prenom}">
+            <div class="error" th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></div>
+        </div>
 
-	<label>Prénom</label>
+        <!-- Numéro de téléphone -->
+        <div class="form-group">
+            <label>Numéro De Téléphone</label>
+            <input type="text" th:field="*{numeroTelephone}">
+            <div class="error" th:if="${#fields.hasErrors('numeroTelephone')}" th:errors="*{numeroTelephone}"></div>
+        </div>
 
-	<input type="text" th:field="*{prenom}">
+        <!-- Mot de passe -->
+        <div class="form-group">
+            <label>Mot de passe</label>
+            <input type="password" th:field="*{motDePasse}" maxlength="4" placeholder="Code PIN à 4 chiffres">
+            <div class="error" th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></div>
+        </div>
 
-	<div
-	     th:if="${#fields.hasErrors('prenom')}"
-	     th:errors="*{prenom}"
-	     style="color:red">
-	</div>
+        <!-- Profil -->
+        <div class="form-group">
+            <label>Profil</label>
+            <select th:field="*{profil}">
+                <option value="SUBSCRIBER">Subscriber</option>
+                <option value="AGENT">Agent</option>
+            </select>
+        </div>
 
-    <br><br>
+        <!-- Type de personne -->
+        <div class="form-group">
+            <label>Type de personne</label>
+            <select th:field="*{typePersonne}">
+                <option value="PERSONNE_PHYSIQUE">Personne physique</option>
+                <option value="PERSONNE_MORALE">Personne morale</option>
+            </select>
+        </div>
 
-	<label>Numero De Téléphone</label>
+        <!-- Bouton -->
+        <button type="submit">Créer le compte</button>
 
-	<input type="text"
-	       th:field="*{numeroTelephone}">
+    </form>
 
-	<div
-	     th:if="${#fields.hasErrors('numeroTelephone')}"
-	     th:errors="*{numeroTelephone}"
-	     style="color:red">
-	</div>
+    <!-- 3. Ajout du menu du bas pour garder le même design -->
+    <div class="menu">
+        <a th:href="@{/}">Accueil</a>
+    </div>
 
-    <br><br>
-	
-	<div class="form-group">
-
-	    <label>Mot de passe</label>
-
-	    <input
-	        type="password"
-	        th:field="*{motDePasse}"
-	        maxlength="4"
-	        placeholder="Code PIN à 4 chiffres">
-
-	    <small
-	        class="error"
-	        th:if="${#fields.hasErrors('motDePasse')}"
-	        th:errors="*{motDePasse}">
-	    </small>
-
-	</div>
-	
-	<br><br>
-
-    <label>Profil</label>
-
-    <select th:field="*{profil}">
-
-        <option value="SUBSCRIBER">
-            Subscriber
-        </option>
-
-        <option value="AGENT">
-            Agent
-        </option>
-
-    </select>
-
-    <br><br>
-
-    <label>Type de personne</label>
-
-    <select th:field="*{typePersonne}">
-
-        <option value="PERSONNE_PHYSIQUE">
-            Personne physique
-        </option>
-
-        <option value="PERSONNE_MORALE">
-            Personne morale
-        </option>
-
-    </select>
-
-    <br><br>
-
-    <button type="submit">
-
-        Créer le compte
-
-    </button>
-
-</form>
+</div>
 
 </body>
 </html>

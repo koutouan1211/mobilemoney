@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Compte créé</title>
+    <link rel="stylesheet" th:href="@{/css/form.css}">
 </head>
 
 <body>
 
-<h2>Compte créé avec succès !</h2>
+<!-- Carte englobante pour appliquer le style centré et le fond blanc -->
+<div class="card">
 
-<p>
-    Numéro :
-    <span th:text="${response.numeroTelephone}"></span>
-</p>
+    <h2>Compte créé avec succès !</h2>
 
-<p>
-    <span th:text="${response.message}"></span>
-</p>
+    <!-- Affichage des informations dans des groupes bien espacés -->
+    <div class="form-group">
+        <label>Numéro de téléphone</label>
+        <input type="text" th:value="${response.numeroTelephone}" readonly style="background-color: #eef2f7; cursor: not-allowed;">
+    </div>
 
-<a th:href="@{/accounts/create}">
+    <div class="form-group">
+        <p th:text="${response.message}" style="color: #27ae60; font-weight: bold; text-align: center; margin-top: 15px;"></p>
+    </div>
 
-Créer un autre compte
+    <!-- Boutons / Liens de navigation avec le style du menu -->
+    <div class="menu">
+        <a th:href="@{/}">Accueil</a>
+        <a th:href="@{/accounts/create}">Créer un autre compte</a>
+    </div>
 
-</a>
+</div>
 
 </body>
 </html>

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,6 +25,7 @@ import com.mobilemoney.account.domain.enums.StatutCompte;
 import com.mobilemoney.account.domain.enums.TypePersonne;
 import com.mobilemoney.account.domain.repository.CompteRepository;
 import com.mobilemoney.account.domain.valueobject.Money;
+import com.mobilemoney.account.domain.valueobject.MotDePasse;
 import com.mobilemoney.account.domain.valueobject.NumeroTelephone;
 import com.mobilemoney.common.exception.CompteAgentInactifException;
 import com.mobilemoney.common.exception.CompteClientInactifException;
@@ -31,30 +34,34 @@ import com.mobilemoney.transaction.application.dto.DepotResponse;
 import com.mobilemoney.transaction.domain.entity.Transfert;
 import com.mobilemoney.transaction.domain.enums.TypeTransaction;
 import com.mobilemoney.transaction.domain.repository.TransfertRepository;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.never;
+
+
 
 @ExtendWith(MockitoExtension.class)
 public class CreateDepotServiceTest {
 
-	//permet de simuler la classe qu'on souhaite tester
-	@Mock
+    // permet de simuler la classe qu'on souhaite tester
+    @Mock
     private CompteRepository compteRepository;
 
     @Mock
     private TransfertRepository transactionRepository;
 
-    
     @InjectMocks
     private CreateDepotService createDepotService;
-	
-    
+
+    // Mot de passe fictif représentant un hash provenant de la base
+    private static final MotDePasse MOT_DE_PASSE =
+            MotDePasse.depuisHash("hash-test");
+
+
     @Test
     void effectuerDepot_avecSucces() {
 
         // ========= ARRANGE =========
 
         CreateDepotRequest request = new CreateDepotRequest();
+
         request.setNumeroAgent("0700000001");
         request.setNumeroClient("0700000002");
         request.setMontant(new BigDecimal("50000"));
@@ -66,6 +73,7 @@ public class CreateDepotServiceTest {
                 "YAO",
                 "Jean",
                 NumeroTelephone.of("0700000001"),
+                MOT_DE_PASSE,
                 Profil.AGENT,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("500000"),
@@ -79,6 +87,7 @@ public class CreateDepotServiceTest {
                 "KOFFI",
                 "Paul",
                 NumeroTelephone.of("0700000002"),
+                MOT_DE_PASSE,
                 Profil.SUBSCRIBER,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("100000"),
@@ -96,10 +105,12 @@ public class CreateDepotServiceTest {
                 .thenReturn(Optional.of(client));
 
         when(compteRepository.save(any(Compte.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+                .thenAnswer(invocation ->
+                        invocation.getArgument(0));
 
         when(transactionRepository.save(any(Transfert.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+                .thenAnswer(invocation ->
+                        invocation.getArgument(0));
 
         // ========= ACT =========
 
@@ -131,17 +142,16 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository)
                 .save(any(Transfert.class));
-
     }
-    
-    
-    
+
+
     @Test
     void effectuerDepot_compteAgentIntrouvable() {
 
         // ========= ARRANGE =========
 
         CreateDepotRequest request = new CreateDepotRequest();
+
         request.setNumeroAgent("0700000001");
         request.setNumeroClient("0700000002");
         request.setMontant(new BigDecimal("50000"));
@@ -169,16 +179,16 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository, never())
                 .save(any());
-
     }
-    
-    
+
+
     @Test
     void effectuerDepot_compteClientIntrouvable() {
 
         // ========= ARRANGE =========
 
         CreateDepotRequest request = new CreateDepotRequest();
+
         request.setNumeroAgent("0700000001");
         request.setNumeroClient("0700000002");
         request.setMontant(new BigDecimal("50000"));
@@ -190,6 +200,7 @@ public class CreateDepotServiceTest {
                 "YAO",
                 "Jean",
                 NumeroTelephone.of("0700000001"),
+                MOT_DE_PASSE,
                 Profil.AGENT,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("500000"),
@@ -223,16 +234,16 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository, never())
                 .save(any());
-
     }
-    
-    
+
+
     @Test
     void effectuerDepot_memeCompte() {
 
         // ========= ARRANGE =========
 
         CreateDepotRequest request = new CreateDepotRequest();
+
         request.setNumeroAgent("0700000001");
         request.setNumeroClient("0700000001");
         request.setMontant(new BigDecimal("50000"));
@@ -244,6 +255,7 @@ public class CreateDepotServiceTest {
                 "YAO",
                 "Jean",
                 NumeroTelephone.of("0700000001"),
+                MOT_DE_PASSE,
                 Profil.AGENT,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("500000"),
@@ -273,23 +285,22 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository, never())
                 .save(any());
-
     }
-    
-    
-    
+
+
     @Test
     void effectuerDepot_typeTransactionInvalide() {
 
         // ========= ARRANGE =========
 
         CreateDepotRequest request = new CreateDepotRequest();
+
         request.setNumeroAgent("0700000001");
         request.setNumeroClient("0700000002");
         request.setMontant(new BigDecimal("50000"));
 
-        // volontairement faux
-        request.setTypeTransaction(TypeTransaction.TRANSFERT_DOMESTIQUE);
+        request.setTypeTransaction(
+                TypeTransaction.TRANSFERT_DOMESTIQUE);
 
         request.setMotif("Dépôt en espèces");
 
@@ -298,6 +309,7 @@ public class CreateDepotServiceTest {
                 "YAO",
                 "Jean",
                 NumeroTelephone.of("0700000001"),
+                MOT_DE_PASSE,
                 Profil.AGENT,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("500000"),
@@ -311,6 +323,7 @@ public class CreateDepotServiceTest {
                 "KOFFI",
                 "Paul",
                 NumeroTelephone.of("0700000002"),
+                MOT_DE_PASSE,
                 Profil.SUBSCRIBER,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("100000"),
@@ -344,16 +357,16 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository, never())
                 .save(any());
-
     }
-    
-    
+
+
     @Test
     void effectuerDepot_compteAgentInactif() {
 
         // ========= ARRANGE =========
 
         CreateDepotRequest request = new CreateDepotRequest();
+
         request.setNumeroAgent("0700000001");
         request.setNumeroClient("0700000002");
         request.setMontant(new BigDecimal("50000"));
@@ -365,11 +378,12 @@ public class CreateDepotServiceTest {
                 "YAO",
                 "Jean",
                 NumeroTelephone.of("0700000001"),
+                MOT_DE_PASSE,
                 Profil.AGENT,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("500000"),
                 Money.of("100000000"),
-                StatutCompte.EN_ATTENTE, // <-- Agent inactif
+                StatutCompte.EN_ATTENTE,
                 LocalDateTime.now()
         );
 
@@ -378,6 +392,7 @@ public class CreateDepotServiceTest {
                 "KOFFI",
                 "Paul",
                 NumeroTelephone.of("0700000002"),
+                MOT_DE_PASSE,
                 Profil.SUBSCRIBER,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("100000"),
@@ -406,16 +421,16 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository, never())
                 .save(any());
-
     }
-    
-    
+
+
     @Test
     void effectuerDepot_compteClientInactif() {
 
         // ========= ARRANGE =========
 
         CreateDepotRequest request = new CreateDepotRequest();
+
         request.setNumeroAgent("0700000001");
         request.setNumeroClient("0700000002");
         request.setMontant(new BigDecimal("50000"));
@@ -427,6 +442,7 @@ public class CreateDepotServiceTest {
                 "YAO",
                 "Jean",
                 NumeroTelephone.of("0700000001"),
+                MOT_DE_PASSE,
                 Profil.AGENT,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("500000"),
@@ -440,11 +456,12 @@ public class CreateDepotServiceTest {
                 "KOFFI",
                 "Paul",
                 NumeroTelephone.of("0700000002"),
+                MOT_DE_PASSE,
                 Profil.SUBSCRIBER,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("100000"),
                 Money.of("200000"),
-                StatutCompte.EN_ATTENTE, // Client inactif
+                StatutCompte.EN_ATTENTE,
                 LocalDateTime.now()
         );
 
@@ -468,17 +485,16 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository, never())
                 .save(any());
-
     }
-    
-    
-    
+
+
     @Test
     void effectuerDepot_soldeAgentInsuffisant() {
 
         // ========= ARRANGE =========
 
         CreateDepotRequest request = new CreateDepotRequest();
+
         request.setNumeroAgent("0700000001");
         request.setNumeroClient("0700000002");
         request.setMontant(new BigDecimal("50000"));
@@ -490,9 +506,10 @@ public class CreateDepotServiceTest {
                 "YAO",
                 "Jean",
                 NumeroTelephone.of("0700000001"),
+                MOT_DE_PASSE,
                 Profil.AGENT,
                 TypePersonne.PERSONNE_PHYSIQUE,
-                Money.of("10000"), // Solde insuffisant
+                Money.of("10000"),
                 Money.of("100000000"),
                 StatutCompte.ACTIF,
                 LocalDateTime.now()
@@ -503,6 +520,7 @@ public class CreateDepotServiceTest {
                 "KOFFI",
                 "Paul",
                 NumeroTelephone.of("0700000002"),
+                MOT_DE_PASSE,
                 Profil.SUBSCRIBER,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("100000"),
@@ -536,16 +554,16 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository, never())
                 .save(any());
-
     }
-    
-    
+
+
     @Test
     void effectuerDepot_plafondClientDepasse() {
 
         // ========= ARRANGE =========
 
         CreateDepotRequest request = new CreateDepotRequest();
+
         request.setNumeroAgent("0700000001");
         request.setNumeroClient("0700000002");
         request.setMontant(new BigDecimal("20000"));
@@ -557,6 +575,7 @@ public class CreateDepotServiceTest {
                 "YAO",
                 "Jean",
                 NumeroTelephone.of("0700000001"),
+                MOT_DE_PASSE,
                 Profil.AGENT,
                 TypePersonne.PERSONNE_PHYSIQUE,
                 Money.of("500000"),
@@ -570,10 +589,11 @@ public class CreateDepotServiceTest {
                 "KOFFI",
                 "Paul",
                 NumeroTelephone.of("0700000002"),
+                MOT_DE_PASSE,
                 Profil.SUBSCRIBER,
                 TypePersonne.PERSONNE_PHYSIQUE,
-                Money.of("190000"),     // Solde actuel
-                Money.of("200000"),     // Plafond
+                Money.of("190000"),
+                Money.of("200000"),
                 StatutCompte.ACTIF,
                 LocalDateTime.now()
         );
@@ -595,7 +615,7 @@ public class CreateDepotServiceTest {
                 );
 
         assertEquals(
-                "Le plafond du compte serait dépassé.",
+                "Le plafond du compte de l'agent sera dépassé.",
                 exception.getMessage());
 
         verify(compteRepository, never())
@@ -603,6 +623,5 @@ public class CreateDepotServiceTest {
 
         verify(transactionRepository, never())
                 .save(any());
-
     }
 }

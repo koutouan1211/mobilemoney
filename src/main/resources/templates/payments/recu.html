@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Reçu de paiement</title>
+
+	<style>
+
+	*{
+	    margin:0;
+	    padding:0;
+	    box-sizing:border-box;
+	    font-family:Arial, Helvetica, sans-serif;
+	}
+
+	body{
+
+	    background:#f4f6f9;
+	    display:flex;
+	    justify-content:center;
+	    align-items:center;
+	    min-height:100vh;
+
+	}
+
+	.recu{
+
+	    width:600px;
+	    background:white;
+	    border-radius:12px;
+	    padding:35px;
+	    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+	}
+
+	h2{
+
+	    text-align:center;
+	    color:#27ae60;
+	    margin-bottom:30px;
+
+	}
+
+	table{
+
+	    width:100%;
+	    border-collapse:collapse;
+
+	}
+
+	td{
+
+	    padding:12px;
+	    border-bottom:1px solid #ecf0f1;
+
+	}
+
+	td:first-child{
+
+	    font-weight:bold;
+	    color:#34495e;
+	    width:45%;
+
+	}
+
+	.message{
+
+	    margin-top:30px;
+	    text-align:center;
+	    color:#27ae60;
+	    font-size:18px;
+	    font-weight:bold;
+
+	}
+
+	.actions{
+
+	    margin-top:35px;
+	    display:flex;
+	    justify-content:space-between;
+
+	}
+
+	.actions a{
+
+	    padding:12px 25px;
+	    background:#2980b9;
+	    color:white;
+	    text-decoration:none;
+	    border-radius:6px;
+
+	}
+
+	.actions a:hover{
+
+	    background:#21618c;
+
+	}
+
+	</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Paiement effectué</h1>
+
+    <div class="receipt">
+
+        <p>
+            <strong>Référence :</strong>
+            <span th:text="${recu.reference}">
+            </span>
+        </p>
+
+        <p>
+            <strong>Client :</strong>
+            <span th:text="${recu.numeroClient}">
+            </span>
+        </p>
+
+        <p>
+            <strong>Marchand :</strong>
+            <span th:text="${recu.numeroMarchand}">
+            </span>
+        </p>
+
+        <p>
+            <strong>Montant :</strong>
+            <span th:text="${recu.montant + ' FCFA'}">
+            </span>
+        </p>
+
+        <p>
+            <strong>Nouveau solde du client :</strong>
+            <span th:text="${recu.nouveauSoldeClient + ' FCFA'}">
+            </span>
+        </p>
+
+        <p>
+            <strong>Statut :</strong>
+            <span th:text="${recu.statut}">
+            </span>
+        </p>
+
+        <p>
+            <strong>Date :</strong>
+            <span th:text="${recu.dateTransaction}">
+            </span>
+        </p>
+
+    </div>
+
+
+    <a th:href="@{/payments/create}">
+        Effectuer un autre paiement
+    </a>
+
+</div>
+
+</body>
+
+</html>

@@ -240,4 +240,51 @@ class CompteTest {
                 exception.getMessage()
         );
     }
+    
+    
+    @Test
+    void should_create_merchant_account() {
+
+        MotDePasse motDePasse =
+                MotDePasse.of("1234");
+
+        Compte compte = Compte.creer(
+                Profil.MARCHAND,
+                "KOFFI",
+                "Commerce",
+                NumeroTelephone.of("0700000004"),
+                motDePasse,
+                TypePersonne.PERSONNE_MORALE
+        );
+
+        assertEquals(
+                Profil.MARCHAND,
+                compte.getProfil()
+        );
+
+        assertEquals(
+                StatutCompte.EN_ATTENTE,
+                compte.getStatut()
+        );
+
+        assertEquals(
+                Money.zero(),
+                compte.getSolde()
+        );
+
+        assertEquals(
+                Money.zero(),
+                compte.getPlafond()
+        );
+
+        assertEquals(
+                TypePersonne.PERSONNE_MORALE,
+                compte.getTypePersonne()
+        );
+
+        assertEquals(
+                motDePasse,
+                compte.getMotDePasse()
+        );
+    }
 }

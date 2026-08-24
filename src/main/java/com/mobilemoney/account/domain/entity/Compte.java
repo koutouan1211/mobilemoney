@@ -41,6 +41,42 @@ public class Compte {
     }
 
     
+    //creation du profil de l'agent
+    public static Compte creerMarchand(
+            String nom,
+            String prenom,
+            NumeroTelephone numeroTelephone,
+            MotDePasse motDePasse,
+            TypePersonne typePersonne) {
+
+        Objects.requireNonNull(nom);
+        Objects.requireNonNull(prenom);
+        Objects.requireNonNull(numeroTelephone);
+        Objects.requireNonNull(motDePasse);
+        Objects.requireNonNull(typePersonne);
+
+        Compte compte = new Compte();
+
+        compte.nom = nom;
+        compte.prenom = prenom;
+        compte.numeroTelephone = numeroTelephone;
+        compte.motDePasse = motDePasse;
+
+        compte.profil = Profil.MARCHAND;
+
+        compte.typePersonne = typePersonne;
+
+        compte.solde = Money.zero();
+
+        compte.plafond = Money.zero();
+
+        compte.statut = StatutCompte.EN_ATTENTE;
+
+        compte.dateCreation = LocalDateTime.now();
+
+        return compte;
+    }
+    
     public static Compte creer(
             Profil profil,
             String nom,
@@ -69,6 +105,14 @@ public class Compte {
                             motDePasse,
                             typePersonne
                     );
+                    
+            case MARCHAND ->
+                    creerMarchand(nom,
+                            prenom,
+                            numeroTelephone,
+                            motDePasse,
+                            typePersonne);
+                    
         };
     }
     

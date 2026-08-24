@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Paiement marchand</title>
+
+	<link rel="stylesheet"
+	      th:href="@{/css/form.css}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Paiement marchand</h1>
+
+    <form th:action="@{/payments/create}"
+          th:object="${paiement}"
+          method="post">
+
+
+        <!-- Numéro du client -->
+
+        <div class="form-group">
+
+            <label for="numeroClient">
+                Numéro du client
+            </label>
+
+            <input
+                    type="text"
+                    id="numeroClient"
+                    th:field="*{numeroClient}"
+                    placeholder="Ex : 0707070707">
+
+            <p class="error"
+               th:if="${#fields.hasErrors('numeroClient')}"
+               th:errors="*{numeroClient}">
+            </p>
+
+        </div>
+
+
+        <!-- Numéro du marchand -->
+
+        <div class="form-group">
+
+            <label for="numeroMarchand">
+                Numéro du marchand
+            </label>
+
+            <input
+                    type="text"
+                    id="numeroMarchand"
+                    th:field="*{numeroMarchand}"
+                    placeholder="Ex : 0700000002">
+
+            <p class="error"
+               th:if="${#fields.hasErrors('numeroMarchand')}"
+               th:errors="*{numeroMarchand}">
+            </p>
+
+        </div>
+
+
+        <!-- Mot de passe -->
+
+        <div class="form-group">
+
+            <label for="motDePasse">
+                Code PIN du client
+            </label>
+
+            <input
+                    type="password"
+                    id="motDePasse"
+                    th:field="*{motDePasse}"
+                    maxlength="4"
+                    placeholder="****">
+
+            <p class="error"
+               th:if="${#fields.hasErrors('motDePasse')}"
+               th:errors="*{motDePasse}">
+            </p>
+
+        </div>
+
+
+        <!-- Montant -->
+
+        <div class="form-group">
+
+            <label for="montant">
+                Montant
+            </label>
+
+            <input
+                    type="number"
+                    id="montant"
+                    th:field="*{montant}"
+                    min="100"
+                    placeholder="Ex : 5000">
+
+            <p class="error"
+               th:if="${#fields.hasErrors('montant')}"
+               th:errors="*{montant}">
+            </p>
+
+        </div>
+
+
+        <!-- Motif -->
+
+        <div class="form-group">
+
+            <label for="motif">
+                Motif du paiement
+            </label>
+
+            <input
+                    type="text"
+                    id="motif"
+                    th:field="*{motif}"
+                    placeholder="Ex : Achat de marchandises">
+
+            <p class="error"
+               th:if="${#fields.hasErrors('motif')}"
+               th:errors="*{motif}">
+            </p>
+
+        </div>
+
+
+        <!-- Type de transaction -->
+
+        <input
+                type="hidden"
+                th:field="*{typeTransaction}">
+
+
+        <!-- Erreur globale -->
+
+        <div
+                class="error"
+                th:if="${#fields.hasGlobalErrors()}">
+
+            <p
+                    th:each="error : ${#fields.globalErrors()}"
+                    th:text="${error}">
+            </p>
+
+        </div>
+
+
+        <!-- Bouton -->
+
+        <button type="submit">
+            Effectuer le paiement
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>
